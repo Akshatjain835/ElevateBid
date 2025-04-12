@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import connectDB from "./config/connectDB.js";
+import userRouter from "./routes/user.route.js";
 
 const app = express();
 dotenv.config();
@@ -19,14 +20,16 @@ app.use(
   );
   app.use(bodyParser.json());
   
-  app.use(
+app.use(
     cors({
       origin: ["http://localhost:5173", "https://production-url.com"],
       credentials: true,
     })
   );
 
-  const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
+
+app.use("/api/user", userRouter);
 
 
 app.get("/", (req, res) => {
