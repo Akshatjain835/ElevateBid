@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
+import connectDB from "./config/connectDB.js";
 
 const app = express();
 dotenv.config();
@@ -32,6 +34,9 @@ app.get("/", (req, res) => {
     res.send("Home Pages");
   });
 
-app.listen(PORT, () => {
-    console.log(`Server Running on port ${PORT}`);
-  });
+connectDB().then(() => {
+    console.log("Database Connected Successfully");
+    app.listen(PORT, () => {
+        console.log(`Server Running on port ${PORT}`);
+      });
+})
