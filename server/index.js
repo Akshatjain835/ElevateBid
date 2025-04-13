@@ -6,6 +6,9 @@ import bodyParser from "body-parser";
 import connectDB from "./config/connectDB.js";
 import userRouter from "./routes/user.route.js";
 import adminRouter from "./routes/admin.route.js";
+import productRouter from "./routes/product.route.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
 dotenv.config();
@@ -32,6 +35,13 @@ const PORT = process.env.PORT || 5000;
 
 app.use("/api/users", userRouter);
 app.use("/api/admin", adminRouter);
+app.use('/api/product', productRouter);
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 app.get("/", (req, res) => {
