@@ -120,3 +120,63 @@ export const logoutUserController = async (req, res) => {
     message: "Successfully Logged Out",
   });
 };
+
+export const loginAsSellerController = async (req, res) => {
+  const { email, password } = req.body;
+
+  // Check if email and password are provided
+  if (!email || !password) {
+    res.status(400).json({ 
+      message: "Please provide email and password" 
+    });
+  }
+
+  // Find the user by email
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    
+   res.status(400).json({
+      message: "User not found" 
+    });
+  }
+
+  // Verify the password
+  const passwordIsCorrect = await bcrypt.compare(password, user.password);
+
+  if (!passwordIsCorrect) {
+   
+    res.status(400).json({
+      message: "Incorrect password" 
+    });
+  }
+
+  // If password is correct, update the role to 'seller'
+  user.role = "seller";
+
+  await user.save();
+
+  // Generate a token and set cookie
+  const token = generateToken(user._id);
+
+  res.cookie("token", token, {
+    path: "/",
+    httpOnly: true,
+    expires: new Date(Date.now() + 1000 * 86400),
+    sameSite: "none",
+    secure: true,
+  });
+
+  // Send the response with updated user info
+  const { _id, name, email: userEmail, photo, role } = user;
+
+  res.status(200).json({
+    message: "User logged in as seller successfully",
+    _id,
+    name,
+    email: userEmail,
+    photo,
+    role,
+    token,
+  });
+};
