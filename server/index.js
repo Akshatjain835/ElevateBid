@@ -30,7 +30,7 @@ app.use(
 
 const PORT = process.env.PORT || 5000;
 
-app.use("/api/user", userRouter);
+app.use("/api/users", userRouter);
 app.use("/api/admin", adminRouter);
 
 
