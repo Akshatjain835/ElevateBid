@@ -6,7 +6,7 @@ export const registerUserController = async (req, res) => {
   const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
-    res.status(400).json({ message: "Please fill all fields" });
+    return res.status(400).json({ message: "Please fill all fields" });
   }
 
   const userExits = await User.findOne({ email });
@@ -15,10 +15,12 @@ export const registerUserController = async (req, res) => {
     return res.status(400).json({ message: "User already exists" });
   }
 
+  const hashed = await bcrypt.hash(password, 10);
+
   const user = await User.create({
     name,
     email,
-    password,
+    password: hashed,
   });
 
   const token = generateToken(user._id);
@@ -52,28 +54,30 @@ export const loginUserController = async (req, res) => {
   if (!email || !password) {
     return res.status(400).json({ message: "Please fill all fields" });
   }
+
   const user = await User.findOne({ email });
+
   if (!user) {
     return res.status(400).json({ message: "User not found" });
   }
 
   const passwordIsCorrrect = await bcrypt.compare(password, user.password);
 
-  const token = generateToken(user._id);
-
-  res.cookie("token", token, {
-    path: "/",
-    httpOnly: true,
-    expires: new Date(Date.now() + 1000 * 86400), // 1 day
-    sameSite: "none",
-    secure: true,
-  });
-
   if (user && passwordIsCorrrect) {
+    const token = generateToken(user._id);
+
+    res.cookie("token", token, {
+      path: "/",
+      httpOnly: true,
+      expires: new Date(Date.now() + 1000 * 86400),
+      sameSite: "none",
+      secure: true,
+    });
+
     const { _id, name, email, photo, role } = user;
 
     res.status(201).json({
-        message: "User logged in successfully",
+      message: "User logged in successfully",
       _id,
       name,
       email,
@@ -86,3 +90,23 @@ export const loginUserController = async (req, res) => {
     throw new Error("Invalid email or password");
   }
 };
+
+export const loginStatusController = async (req, res) => {
+
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.json(false);
+  }
+
+  const verified = jwt.verify(token, process.env.JWT_SECRET);
+
+  if (verified) {
+    return res.json(true);
+  }
+  
+  return res.json(false);
+};
+
+
+
