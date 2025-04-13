@@ -92,7 +92,6 @@ export const loginUserController = async (req, res) => {
 };
 
 export const loginStatusController = async (req, res) => {
-
   const token = req.cookies.token;
 
   if (!token) {
@@ -104,9 +103,20 @@ export const loginStatusController = async (req, res) => {
   if (verified) {
     return res.json(true);
   }
-  
+
   return res.json(false);
 };
 
+export const logoutUserController = async (req, res) => {
+  res.cookie("token", "", {
+    path: "/",
+    httpOnly: true,
+    expires: new Date(0),
+    sameSite: "none",
+    secure: true,
+  });
 
-
+  return res.status(200).json({
+    message: "Successfully Logged Out",
+  });
+};
