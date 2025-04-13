@@ -180,3 +180,30 @@ export const loginAsSellerController = async (req, res) => {
     token,
   });
 };
+
+export const getUserController = async (req, res) => {
+  
+  const user = await User.findById(req.user._id).select("-password");
+
+  res.status(200).json({
+    message: "User retrieved successfully",
+    user,
+  });
+
+};
+
+export const  getUserBalanceController =async (req, res) => {
+
+  const user = await User.findById(req.user.id);
+
+  if (!user) {
+    res.status(404).json({
+      message: "User not found",
+    });
+  }
+
+  res.status(200).json({
+    message: "User balance retrieved successfully",
+    balance: user.balance,
+  });
+};
