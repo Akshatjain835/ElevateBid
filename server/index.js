@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import connectDB from "./config/connectDB.js";
 import userRouter from "./routes/user.route.js";
+import adminRouter from "./routes/admin.route.js";
 
 const app = express();
 dotenv.config();
@@ -30,6 +31,7 @@ app.use(
 const PORT = process.env.PORT || 5000;
 
 app.use("/api/user", userRouter);
+app.use("/api/admin", adminRouter);
 
 
 app.get("/", (req, res) => {
