@@ -16,3 +16,30 @@ export const getAllUserController = async (req, res) => {
     });
   };
 
+export const estimateIncomeController =async (req, res) => {
+
+    try {
+      const admin = await User.findOne({ role: "admin" });
+
+      if (!admin) {
+        return res.status(404).json({ 
+            error: "Admin user not found" 
+        });
+      }
+
+      const commissionBalance = admin.commissionBalance;
+    //   console.log(comissionBalance)
+
+      res.status(200).json({
+        message: "Commission balance fetched successfully",
+        commissionBalance,
+      });
+
+    } catch (error) {
+
+    //   console.error(error);
+      res.status(500).json({ 
+        error: "Internal server error"
+     });
+    }
+  };
