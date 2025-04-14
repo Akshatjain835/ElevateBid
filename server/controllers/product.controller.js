@@ -102,7 +102,7 @@ export const deleteProductController = async (req, res) => {
   // console.log(id);
   const product = await Product.findById(id);
   // console.log(product);
-  
+
   if (!product) {
     return res.status(404).json({
       message: "Product not found",
@@ -136,4 +136,85 @@ export const deleteProductController = async (req, res) => {
 
     message: "Product deleted."
    });
+};
+
+export const updateProductController = async (req, res) => {
+
+  const { title, description, price, height, lengthpic, width, mediumused, weigth } = req.body;
+  // console.log(req.body);
+  const { id } = req.params;
+  const product = await Product.findById(id);
+  // console.log(product);
+
+  if (!product) {
+
+   return res.status(404).json({
+      message: "Product not found",
+    });
+  }
+  if (product.user.toString() !== req.user.id) {
+    return res.status(401).json({
+      message: "You are not authorized to update this product",
+    });
+  }
+
+  let fileData = {};
+
+  if (req.file) {
+    let uploadedFile;
+
+    try {
+      uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+        folder: "Product-Images",
+        resource_type: "image",
+      });
+
+    } catch (error) {
+
+      return res.status(500).json({
+        message: "Image upload failed",
+      });
+    }
+
+    if (product.image && product.image.public_id) {
+      try {
+        await cloudinary.uploader.destroy(product.image.public_id);
+      } catch (error) {
+        console.error("Error deleting previous image from Cloudinary:", error);
+      }
+    }
+    //step 1 :
+    fileData = {
+      fileName: req.file.originalname,
+      filePath: uploadedFile.secure_url,
+      fileType: req.file.mimetype,
+      public_id: uploadedFile.public_id,
+    };
+  }
+
+  const updatedProduct = await Product.findByIdAndUpdate(
+    { _id: id },
+    {
+      title,
+      description,
+      price,
+      height,
+      lengthpic,
+      width,
+      mediumused,
+      weigth,
+      image: Object.keys(fileData).length === 0 ? Product?.image : fileData,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+
+  );
+  // res.status(200).json(updatedProduct);
+  res.status(200).json({
+    message: "Product updated successfully",
+    success: true,
+    data: updatedProduct,
+  });
 };
