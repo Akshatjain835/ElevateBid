@@ -64,3 +64,26 @@ export const getAllCategoryController = async (req, res) => {
   };
 
 
+export const getCategoryController =async (req, res) => {
+
+    const { id } = req.params;
+    // console.log(id);
+
+    try {
+      const categorie = await Category.findById(id).populate("user").sort("-createAt");
+
+    //   res.json(categorie);
+    res.status(200).json({
+        message: "Category fetched successfully",
+        success: true,
+        data: categorie,
+      });
+
+    } catch (error) {
+      res.status(500).json({
+        message: "Internal server error",
+        success: false,
+        error: error.message,
+      });
+    }
+  };
