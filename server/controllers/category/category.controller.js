@@ -28,7 +28,7 @@ export const createCategoryController = async (req, res) => {
 
 
     } catch (error) {
-        
+
       res.status(500).json({
         success: false,
         message: "Internal server error",
@@ -36,3 +36,31 @@ export const createCategoryController = async (req, res) => {
         });
     }
   };
+
+
+
+export const getAllCategoryController = async (req, res) => {
+
+    try {
+      const categories = await Category.find({}).populate("user").sort("-createAt");
+        // console.log(categories);
+
+    //   res.json(categories);
+    res.status(200).json({
+        message: "Categories fetched successfully",
+        success: true,
+        data: categories,
+      });
+
+    } catch (error) {
+
+      res.status(500).json({
+        message: "Internal server error",
+        success: false,
+        error: error.message,
+      });
+
+    }
+  };
+
+
