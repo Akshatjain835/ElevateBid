@@ -79,3 +79,61 @@ export const createProductController = async (req, res) => {
     data: product,
   });
 };
+
+
+export const getAllProductsController =async (req, res) => {
+
+  const products = await Product.find({}).sort("-createdAt").populate("user");
+  // console.log(products);
+
+    
+
+  res.status(200).json({
+    message: "Products fetched successfully",
+    success: true,
+    data: productsWithDetails,
+  });
+};
+
+
+export const deleteProductController = async (req, res) => {
+
+  const { id } = req.params;
+  // console.log(id);
+  const product = await Product.findById(id);
+  // console.log(product);
+  
+  if (!product) {
+    return res.status(404).json({
+      message: "Product not found",
+    });
+  }
+  if (product.user?.toString() !== req.user.id) {
+
+    return res.status(401).json({
+      message: "You are not authorized to delete this product",
+    });
+  }
+
+  if (product.image && product.image.public_id) {
+    // Delete image from Cloudinary
+    // console.log(product.image.public_id);
+    try {
+      await cloudinary.uploader.destroy(product.image.public_id);
+
+    } catch (error) {
+      res.status(500).json({
+        message: "Image deletion failed",
+      });
+      console.error("Error deleting image from Cloudinary:", error);
+    }
+  }
+
+  await Product.findByIdAndDelete(id);
+
+  res.status(200).json({ 
+    success: true,  
+
+    message: "Product deleted."
+   });
+};
