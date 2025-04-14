@@ -12,6 +12,7 @@ import productSellerRouter from "./routes/seller/product.route.js";
 import productUserRouter from "./routes/user/productUser.route.js";
 import adminProductRouter from "./routes/admin/adminProduct.route.js";
 import biddingRouter from "./routes/bidding/bidding.route.js";
+import categoryRouter from "./routes/category/category.route.js";
 
 const app = express();
 dotenv.config();
@@ -45,6 +46,8 @@ app.use('/api/product/seller', productSellerRouter);
 app.use('/api/product/users', productUserRouter);
 
 app.use('/api/bidding',biddingRouter)
+
+app.use('/api/category',categoryRouter)
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
