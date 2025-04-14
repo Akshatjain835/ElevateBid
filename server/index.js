@@ -4,11 +4,12 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import connectDB from "./config/connectDB.js";
-import userRouter from "./routes/user.route.js";
-import adminRouter from "./routes/admin.route.js";
-import productRouter from "./routes/product.route.js";
+import userRouter from "./routes/user/user.route.js";
+import adminRouter from "./routes/admin/admin.route.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import productSellerRouter from "./routes/seller/product.route.js";
+import productUserRouter from "./routes/user/productUser.route.js";
 
 const app = express();
 dotenv.config();
@@ -35,7 +36,8 @@ const PORT = process.env.PORT || 5000;
 
 app.use("/api/users", userRouter);
 app.use("/api/admin", adminRouter);
-app.use('/api/product', productRouter);
+app.use('/api/product/seller', productSellerRouter);
+app.use('/api/product/user', productUserRouter);
 
 
 const __filename = fileURLToPath(import.meta.url);

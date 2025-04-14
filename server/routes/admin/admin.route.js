@@ -1,6 +1,6 @@
 import Router from "express";
-import { estimateIncomeController, getAllUserController } from "../controllers/admin.controller.js";
-import { isAdmin, protectMiddleware } from "../middlewares/authMiddleware.js";
+import { estimateIncomeController, getAllUserController } from "../../controllers/admin/admin.controller.js";
+import { isAdmin, protectMiddleware } from "../../middlewares/authMiddleware.js";
 
 const adminRouter = Router();
 

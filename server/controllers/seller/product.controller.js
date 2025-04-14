@@ -1,5 +1,5 @@
 import slugify from "slugify";
-import Product from "../models/product.model.js";
+import Product from "../../models/product.model.js";
 import { v2 as cloudinary } from "cloudinary";
 
 export const createProductController = async (req, res) => {
@@ -79,22 +79,6 @@ export const createProductController = async (req, res) => {
     data: product,
   });
 };
-
-
-export const getAllProductsController =async (req, res) => {
-
-  const products = await Product.find({}).sort("-createdAt").populate("user");
-  // console.log(products);
-
-    
-
-  res.status(200).json({
-    message: "Products fetched successfully",
-    success: true,
-    data: productsWithDetails,
-  });
-};
-
 
 export const deleteProductController = async (req, res) => {
 
@@ -218,3 +202,6 @@ export const updateProductController = async (req, res) => {
     data: updatedProduct,
   });
 };
+
+
+
