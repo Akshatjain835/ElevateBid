@@ -50,3 +50,16 @@ export const protectMiddleware =async (req, res, next) => {
       });
     }
   };
+
+ export  const isSeller = (req, res, next) => {
+
+    if (req.user && (req.user.role === "seller" || req.user.role === "admin")) {
+
+      next();
+
+    } else {
+      return res.status(403).json({
+        message: "Access Denied!! You are not Seller "
+      });
+    }
+  };
