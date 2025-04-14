@@ -15,3 +15,19 @@ export const getAllProductsController =async (req, res) => {
     });
   };
   
+export  const getAllProductsofUserController = async (req, res) => {
+    const userId = req.user._id;
+  
+    const products = await Product.find({ user: userId }).sort("-createdAt").populate("user");
+     // console.log(products);
+
+     //bidding code
+  
+   
+    res.status(200).json({
+      message: "Products fetched successfully",
+      success: true,
+     
+    });
+  };
+  
