@@ -6,6 +6,6 @@ const biddingRouter = Router();
 
 
 biddingRouter.get("/:productId", getBiddingHistoryController);
-
+biddingRouter.post("/", protectMiddleware, placeBidController);
 
 export default biddingRouter;
