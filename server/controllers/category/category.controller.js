@@ -88,6 +88,7 @@ export const getCategoryController =async (req, res) => {
     }
   };
 
+
 export const updateCategoryController = async (req, res) => {
     const { id } = req.params;
 
@@ -111,7 +112,29 @@ export const updateCategoryController = async (req, res) => {
       });
 
     } catch (error) {
-        
+
+      res.status(500).json({
+        message: "Internal server error",
+        success: false,
+        error: error.message,
+      });
+    }
+  };
+
+
+export const deleteCategoryController = async (req, res) => {
+
+    const { id } = req.params;
+    try {
+
+      const categorie=await Category.findByIdAndDelete(id);
+
+      res.status(200).json({ 
+        message: "Category deleted successfully",
+        success: true,
+        data: categorie,
+     });
+    } catch (error) {
       res.status(500).json({
         message: "Internal server error",
         success: false,
