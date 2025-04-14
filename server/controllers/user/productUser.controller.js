@@ -68,3 +68,11 @@ export const getAllSoldProductsController = async (req, res) => {
     data: product,
   });
 };
+
+export const getWonProductsController =async (req, res) => {
+  const userId = req.user._id;
+
+  const wonProducts = await Product.find({ soldTo: userId }).sort("-createdAt").populate("user");
+  // console.log(wonProducts);
+  
+};
