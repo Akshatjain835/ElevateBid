@@ -87,3 +87,35 @@ export const getCategoryController =async (req, res) => {
       });
     }
   };
+
+export const updateCategoryController = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const categorie = await Category.findByIdAndUpdate(
+        // console.log(categorie)
+        id,
+        {
+          title: req?.body?.title,
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+    
+    res.status(200).json({
+        message: "Category updated successfully",
+        success: true,
+        data: categorie,
+      });
+
+    } catch (error) {
+        
+      res.status(500).json({
+        message: "Internal server error",
+        success: false,
+        error: error.message,
+      });
+    }
+  };
