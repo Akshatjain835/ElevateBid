@@ -19,5 +19,5 @@ const BiddingProductSchema = mongoose.Schema({
   },
   { timestamps: true }
 );
-const biddingproduct = mongoose.model("BiddingProduct", BiddingProductSchema);
-export default biddingproduct
+const BiddingProduct = mongoose.model("BiddingProduct", BiddingProductSchema);
+export default BiddingProduct

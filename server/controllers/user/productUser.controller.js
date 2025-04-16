@@ -1,3 +1,4 @@
+import BiddingProduct from "../../models/bidding.model.js";
 import Product from "../../models/product.model.js";
 
 
@@ -6,7 +7,22 @@ export const getAllProductsController =async (req, res) => {
     const products = await Product.find({}).sort("-createdAt").populate("user");
     // console.log(products);
   
-      
+    const productsWithDetails = await Promise.all(
+
+      products.map(async (product) => {
+        const latestBid = await BiddingProduct.findOne({ product: product._id }).sort("-createdAt");
+        const biddingPrice = latestBid ? latestBid.price : product.price;
+        //  console.log(biddingPrice)
+        const totalBids = await BiddingProduct.countDocuments({ product: product._id });
+        // console.log(totalBids)
+
+        return {
+          ...product._doc,
+          biddingPrice,
+          totalBids, // Adding the total number of bids
+        };
+      })
+    );
   
     res.status(200).json({
       message: "Products fetched successfully",
@@ -21,12 +37,24 @@ export  const getAllProductsofUserController = async (req, res) => {
     const products = await Product.find({ user: userId }).sort("-createdAt").populate("user");
      // console.log(products);
 
-     //bidding code
+   const productsWithPrices = await Promise.all(
+    products.map(async (product) => {
+      const latestBid = await BiddingProduct.findOne({ product: product._id }).sort("-createdAt");
+      // console.log(latestBid)
+      const biddingPrice = latestBid ? latestBid.price : product.price;
+      // console.log(biddingPrice)
+      return {
+        ...product._doc,
+        biddingPrice, // Adding the price field
+      };
+    })
+  );
   
    
     res.status(200).json({
       message: "Products fetched successfully",
       success: true,
+      data:productsWithPrices
      
     });
   };
