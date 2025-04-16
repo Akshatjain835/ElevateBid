@@ -4,12 +4,12 @@ const productSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      require: true,
+      required: true,
       ref: "User",
     },
     title: {
       type: String,
-      require: [true, "Please add a title"],
+      required: [true, "Please add a title"],
       trime: true,
     },
     slug: {
@@ -36,7 +36,7 @@ const productSchema = mongoose.Schema(
     },
     price: {
       type: Number,
-      require: [true, "Please add a Price"],
+      required: [true, "Please add a Price"],
     },
     height: {
       type: Number,
