@@ -1,10 +1,13 @@
 import React from 'react'
-import { Hero } from '../../routes/AllRoutes'
+import { CategorySlider, Hero } from '../../routes/common/AllRoutes'
 
 
 const Home = () => {
   return (
-    <div><Hero/></div>
+    <>
+    <Hero/>
+    <CategorySlider/>
+    </>
   )
 }
 

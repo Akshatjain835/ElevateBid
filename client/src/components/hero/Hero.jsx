@@ -1,6 +1,6 @@
 import { LuCirclePlus } from "react-icons/lu";
 import React from 'react'
-import { Container,Body, ProfileCard, Title } from '../../routes/AllRoutes.jsx'
+import { Container,Body, ProfileCard, Title } from '../../routes/common/AllRoutes.jsx'
 import SearchBox from './SearchBox.jsx';
 import Box from './Box.jsx';
 export const User1 = "https://cdn-icons-png.flaticon.com/128/6997/6997662.png";

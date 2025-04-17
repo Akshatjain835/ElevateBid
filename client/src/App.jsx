@@ -1,7 +1,7 @@
 // src/App.jsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import routes from "./routes/index.jsx";
-import ScrollToTop from "./routes/ScrollToTop.jsx";
+import ScrollToTop from "./routes/common/ScrollToTop.jsx";
 
 function App() {
   return (

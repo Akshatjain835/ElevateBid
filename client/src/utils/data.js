@@ -30,3 +30,42 @@ export const menulists = [
       link: "Contact",
     },
   ];
+
+  export const categorylists = [
+    {
+      id: 1,
+      image: "../images/category/c1.png",
+      title: "watches",
+    },
+    {
+      id: 2,
+      image: "../images/category/c2.png",
+      title: "electronics",
+    },
+    {
+      id: 3,
+      image: "../images/category/c3.png",
+      title: "sports",
+    },
+    {
+      id: 4,
+      image: "../images/category/c4.png",
+      title: "real estate",
+    },
+    {
+      id: 5,
+      image: "../images/category/c5.png",
+      title: "vehicle",
+    },
+    {
+      id: 6,
+      image: "../images/category/c6.png",
+      title: "jewelry",
+    },
+    {
+      id: 7,
+      image: "../images/category/c7.png",
+      title: "clothes",
+    },
+  ];
+  

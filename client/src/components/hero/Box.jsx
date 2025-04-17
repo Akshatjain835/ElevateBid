@@ -1,6 +1,6 @@
 import { AiOutlinePropertySafety } from "react-icons/ai";
 import React from "react";
-import { Caption, Title } from "../../routes/AllRoutes";
+import { Caption, Title } from "../../routes/common/AllRoutes";
 import PropTypes from "prop-types";
 const Box = ({ title, desc }) => {
     return (

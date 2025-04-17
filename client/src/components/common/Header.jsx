@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Container, CustomNavLink, CustomNavLinkList, ProfileCard } from "../../routes/AllRoutes.jsx";
+import { Container, CustomNavLink, CustomNavLinkList, ProfileCard } from "../../routes/common/AllRoutes.jsx";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { IoSearchOutline } from "react-icons/io5";
 import { useLocation } from 'react-router-dom';
