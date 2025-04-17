@@ -1,16 +1,14 @@
+import { LuCirclePlus } from "react-icons/lu";
 import React from 'react'
-import { CiCirclePlus } from "react-icons/ci";
 import { Container,Body, ProfileCard, Title } from '../../routes/AllRoutes.jsx'
 import SearchBox from './SearchBox.jsx';
 import Box from './Box.jsx';
-
-import { CiCirclePlus } from "react-icons/ci";
 export const User1 = "https://cdn-icons-png.flaticon.com/128/6997/6997662.png";
 export const User2 = "https://cdn-icons-png.flaticon.com/128/236/236832.png";
 export const User3 = "https://cdn-icons-png.flaticon.com/128/236/236831.png";
 export const User4 = "https://cdn-icons-png.flaticon.com/128/1154/1154448.png";
 
-const Hero = () => {
+export const Hero = () => {
   return (
     <>
     <section className="hero bg-primary py-8">
@@ -70,7 +68,7 @@ const Hero = () => {
               </ProfileCard>
 
               <ProfileCard className="border-2 border-white -ml-4">
-                <CiCirclePlus size={27} />
+                <LuCirclePlus size={27} />
               </ProfileCard>
             </div>
           </div>
@@ -82,4 +80,4 @@ const Hero = () => {
   )
 }
 
-export default Hero
+

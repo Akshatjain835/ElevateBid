@@ -1,5 +1,6 @@
 import { IoIosSearch } from "react-icons/io";
-import { PrimaryButton } from "../../utils/data.js";
+import { PrimaryButton } from "../../routes/AllRoutes.jsx";
+
 const SearchBox = () => {
     return (
       <>

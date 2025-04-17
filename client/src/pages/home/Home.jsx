@@ -1,8 +1,10 @@
 import React from 'react'
+import { Hero } from '../../routes/AllRoutes'
+
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <div><Hero/></div>
   )
 }
 
