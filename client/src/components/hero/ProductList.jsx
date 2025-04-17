@@ -8,7 +8,7 @@ export const ProductList = () => {
       <section className="product-home">
         <Container>
           <Heading
-            title="Live Auction"
+            title="Live Bidding"
             subtitle="Explore on the world's best & largest Bidding marketplace with our beautiful Bidding products. We want to be a part of your smile, success and future growth."
           />
 
