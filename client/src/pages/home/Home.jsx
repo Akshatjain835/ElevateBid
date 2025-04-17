@@ -1,5 +1,5 @@
 import React from 'react'
-import { CategorySlider, Hero } from '../../routes/common/AllRoutes'
+import { CategorySlider, Hero, ProductList } from '../../routes/common/AllRoutes'
 
 
 const Home = () => {
@@ -7,6 +7,7 @@ const Home = () => {
     <>
     <Hero/>
     <CategorySlider/>
+    <ProductList/>
     </>
   )
 }
