@@ -1,9 +1,10 @@
-import Home from "../../pages/home/Home";
+import { Layout } from "../../components/common/layout/Layout.jsx";
+import Home from "../../pages/home/Home.jsx";
 
 const PublicRoutes = [
     {
         path: "/",
-        element: <Home />,
+        element: <Layout><Home /></Layout>,
       },
 ];
 
