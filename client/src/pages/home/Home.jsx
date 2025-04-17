@@ -1,5 +1,5 @@
 import React from 'react'
-import { CategorySlider, Hero, Process, ProductList, TopSeller } from '../../routes/common/AllRoutes.jsx'
+import { CategorySlider, Hero, Process, ProductList, TopSeller, Trust } from '../../routes/common/AllRoutes.jsx'
 
 
 const Home = () => {
@@ -10,6 +10,7 @@ const Home = () => {
     <ProductList/>
     <TopSeller/>
     <Process/>
+    <Trust/>
     </>
   )
 }

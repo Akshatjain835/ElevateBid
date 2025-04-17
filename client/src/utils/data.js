@@ -168,3 +168,18 @@ export const processList = [
         cover: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/09/auction-3.png",
       },
 ];
+
+export const trustList = [
+    {
+      id: 1,
+      profile: "https://bidout-react.vercel.app/images/bg/sponsor1.png",
+    },
+    {
+      id: 2,
+      profile: "https://bidout-react.vercel.app/images/bg/sponsor3.png",
+    },
+    {
+      id: 3,
+      profile: "https://bidout-react.vercel.app/images/bg/sponsor2.png",
+    },
+];
