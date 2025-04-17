@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Container, CustomNavLink, CustomNavLinkList } from './Design';
+import { Container, CustomNavLink, CustomNavLinkList, ProfileCard } from "../../routes/AllRoutes.jsx";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { IoSearchOutline } from "react-icons/io5";
 import { useLocation } from 'react-router-dom';
 import { menulists } from '../../utils/data';
-import ProfileCard from '../cards/ProfileCard';
+
 const User1 = "https://cdn-icons-png.flaticon.com/128/6997/6997662.png";
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -111,7 +111,7 @@ const Header = () => {
                   </li>
                 ))}
               </div>
-              
+
             </nav>
           </Container>
         </header>
