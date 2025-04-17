@@ -1,4 +1,5 @@
 export const streamUpload = (buffer, folder) => {
+  
     return new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         {
