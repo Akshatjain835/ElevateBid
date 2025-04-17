@@ -121,3 +121,23 @@ export const menulists = [
    
   ];
   
+  export const topSellerList = [
+    {
+      id: 1,
+      title: "Akshat",
+      profile: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/01/client-5-1.png",
+      amount: "100",
+    },
+    {
+      id: 2,
+      title: "Naman",
+      profile: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/01/client-6.png",
+      amount: "200",
+    },
+    {
+      id: 3,
+      title: "Shivam",
+      profile: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/01/client-3.png",
+      amount: "300",
+    },
+];
