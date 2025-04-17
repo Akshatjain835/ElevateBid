@@ -5,6 +5,7 @@ export {CategoryCard} from '../../components/cards/CategoryCard.jsx'
 export {ProductList} from '../../components/hero/ProductList.jsx'
 export {ProductCard} from '../../components/cards/ProductCard.jsx'
 export {TopSeller} from '../../components/hero/TopSeller.jsx'
+export {Process} from '../../components/hero/Process.jsx'
 
 //common routes
 export { Title, Body, Caption, CustomLink, CustomNavLink, Container, PrimaryButton, ProfileCard, Heading, CustomNavLinkList } from "../../components/common/Design.jsx";
