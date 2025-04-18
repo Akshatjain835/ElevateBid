@@ -183,3 +183,42 @@ export const trustList = [
       profile: "https://bidout-react.vercel.app/images/bg/sponsor2.png",
     },
 ];
+
+export const topList = [
+  {
+    id: 1,
+    catgeory: "Luxury Vehicles",
+    total: 7,
+    img1: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/09/automotive_product-01-300x200.jpg",
+    img2: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/09/automotive_product-07-150x150.jpg",
+    img3: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/09/automotive_product-03-150x150.jpg",
+    img4: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/09/automotive_product-08-150x150.jpg",
+  },
+  {
+    id: 2,
+    catgeory: "Classic",
+    total: 10,
+    img1: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/09/automotive_product-09-300x200.jpg",
+    img2: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/09/automotive_product-01-150x150.jpg",
+    img3: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/09/automotive_product-07-150x150.jpg",
+    img4: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/09/automotive_product-03-150x150.jpg",
+  },
+  {
+    id: 3,
+    catgeory: "Muscle Machines",
+    total: 8,
+    img1: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/09/automotive_product-07-300x200.jpg",
+    img2: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/09/automotive_product-03-150x150.jpg",
+    img4: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/09/automotive_product-07-150x150.jpg",
+    img3: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/09/automotive_product-01-150x150.jpg",
+  },
+  {
+    id: 4,
+    catgeory: "Automotive",
+    total: 4,
+    img3: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/09/automotive_product-05-300x200.jpg",
+    img2: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/09/automotive_product-05-768x768.jpg",
+    img4: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/09/automotive_product-07-150x150.jpg",
+    img1: "https://rainbowthemes.net/themes/nuron/wp-content/uploads/2023/09/automotive_product-04-768x768.jpg",
+  },
+];

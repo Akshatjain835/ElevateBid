@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 import { menulists } from '../../utils/data';
 
 const User1 = "https://cdn-icons-png.flaticon.com/128/6997/6997662.png";
-const Header = () => {
+export const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -118,5 +118,3 @@ const Header = () => {
       </>
       );
 }
-
-export default Header
