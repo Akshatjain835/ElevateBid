@@ -14,7 +14,7 @@ export const ProductCard = ({ item }) => {
           <div className="h-56 relative overflow-hidden">
 
             <NavLink to={`/details/${item?._id}`}>
-              <img src={item?.image} alt={item?.image} className="w-full h-full object-cover rounded-xl hover:scale-105 hover:cursor-pointer transition-transform duration-300 ease-in-out" />
+              <img src={item?.image.filepath} alt={item?.image} className="w-full h-full object-cover rounded-xl hover:scale-105 hover:cursor-pointer transition-transform duration-300 ease-in-out" />
             </NavLink>
 
             <ProfileCard className="shadow-s1 absolute right-3 bottom-3">

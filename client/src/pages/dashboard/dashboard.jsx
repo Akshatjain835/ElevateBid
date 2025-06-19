@@ -9,20 +9,26 @@ import { HiOutlineUsers } from "react-icons/hi2";
 import { useRedirectLoggedOutUser } from "../../hooks/useRedirectLoggedOutUser.js";
 import { useUserProfile } from "../../hooks/userProfile.js";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserIncome, getUserProfile } from "../../redux/features/authSlice.js";
+import { getAllUser, getUserIncome, getUserProfile } from "../../redux/features/authSlice.js";
+import { getAllProduct, getAllProductOfUser, getAllWonedProductOfUser } from "../../redux/features/productSlice.js";
 
 export const Dashboard = () => {
     useRedirectLoggedOutUser('/login')
     const role = useUserProfile()
-    const {income}=useSelector((state)=>state.auth)
+    const {income,users}=useSelector((state)=>state.auth)
     // console.log(income)
     const dispatch = useDispatch()
-    const { user } = useSelector((state) => state.auth)
+    )
+    const {products,userproducts,wonedproducts,product}=useSelector((state)=>state.product)
 
     useEffect(() => {
 
         dispatch(getUserProfile())
         dispatch(getUserIncome())
+        dispatch(getAllProduct())
+        dispatch(getAllWonedProductOfUser())
+        dispatch(getAllProductOfUser())
+        dispatch(getAllUser())
 
     }, [dispatch])
 
