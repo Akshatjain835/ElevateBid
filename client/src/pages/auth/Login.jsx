@@ -1,8 +1,9 @@
 import { FaFacebook, FaGoogle } from "react-icons/fa";
-import { Caption, Container, CustomNavLink, PrimaryButton, Title } from "../../router";
-import { commonClassNameOfInput } from "../../components/common/Design";
+import { Caption, Container, CustomNavLink, PrimaryButton, Title } from '../../routes/common/AllRoutes.jsx'
+import { commonClassNameOfInput } from '../../routes/common/AllRoutes.jsx'
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { login } from "../../redux/features/authSlice.js";
 
 const initialState={
     name:'',
@@ -16,7 +17,7 @@ export const Login = () => {
     const navigate=useNavigate()
     
     const [formData,setFormData]=useState(initialState)
-    const {name,email,password,confirmPassword}=formData
+    const {email,password}=formData
 
      const {isLoading,isError,isSuccess,message}=useSelector((state)=>state.auth)
     
@@ -33,12 +34,8 @@ export const Login = () => {
             return toast.error('Please fill all fields')
             
         }
-        
-       
 
-        
-
-        dispatch(register({email,password}))
+        dispatch(login({email,password}))
         
      }
 
@@ -86,11 +83,11 @@ export const Login = () => {
 
           <div className="py-5 mt-8">
             <Caption className="mb-2">Enter Your Email *</Caption>
-            <input type="email" name="email" className={commonClassNameOfInput} placeholder="Enter Your Email" required />
+            <input type="email" name="email" value={email} onChange={handleInputChange} className={commonClassNameOfInput} placeholder="Enter Your Email" required />
           </div>
           <div>
             <Caption className="mb-2">Password *</Caption>
-            <input type="password" name="password" className={commonClassNameOfInput} placeholder="Enter Your Password" required />
+            <input type="password" name="password" value={password} onChange={handleInputChange} className={commonClassNameOfInput} placeholder="Enter Your Password" required />
           </div>
           <div className="flex items-center gap-2 py-4">
             <input type="checkbox" />

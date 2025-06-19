@@ -1,9 +1,10 @@
 import { FaFacebook, FaGoogle } from "react-icons/fa";
-import { Caption, Container, CustomNavLink, PrimaryButton, Title } from "../../router";
-import { commonClassNameOfInput } from "../../components/common/Design";
+import { Caption, Container, CustomNavLink, PrimaryButton, Title } from '../../routes/common/AllRoutes.jsx'
+import { commonClassNameOfInput } from '../../routes/common/AllRoutes.jsx'
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../redux/features/authSlice";
+
 const initialState={
   name:'',
   email:'',

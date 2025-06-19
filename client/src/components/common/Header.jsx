@@ -4,9 +4,15 @@ import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { IoSearchOutline } from "react-icons/io5";
 import { useLocation } from 'react-router-dom';
 import { menulists } from '../../utils/data';
+import { ShowOnLogin, ShowOnLogout } from '../../utils/HiddenLink.jsx';
+import { useUserProfile } from '../../hooks/userProfile.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserProfile, selectIsLoggedIn } from '../../redux/features/authSlice.js';
 
 const User1 = "https://cdn-icons-png.flaticon.com/128/6997/6997662.png";
 export const Header = () => {
+
+    const isLoggedIn=useSelector(selectIsLoggedIn)
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -43,7 +49,16 @@ export const Header = () => {
   // Check if it's the home page
   const isHomePage = location.pathname === "/";
 
-  const role = "buyer";
+  // const role = "buyer";
+  const role = useUserProfile()
+  const dispatch = useDispatch()
+  const { user } = useSelector((state) => state.auth)
+
+  useEffect(() => {
+    if(isLoggedIn){
+      dispatch(getUserProfile())
+    }
+  }, [dispatch,isLoggedIn])
 
 
     return (
@@ -77,22 +92,32 @@ export const Header = () => {
 
                 <div className="hidden lg:flex lg:items-center lg:gap-8">
                   <IoSearchOutline size={23} className={`${isScrolled || !isHomePage ? "text-black" : "text-white"}`} />
-                  {role === "buyer" && (
+                  { isLoggedIn && role === "buyer" && (
+                    <ShowOnLogin>
                     <CustomNavLink href="/seller/login" className={`${isScrolled || !isHomePage ? "text-black" : "text-white"}`}>
                       Become a Seller
                     </CustomNavLink>
+                    </ShowOnLogin>
                   )}
+                  <ShowOnLogout>
                   <CustomNavLink href="/login" className={`${isScrolled || !isHomePage ? "text-black" : "text-white"}`}>
                     Sign in
                   </CustomNavLink>
+                 
+
                   <CustomNavLink href="/register" className={`${!isHomePage || isScrolled ? "bg-green" : "bg-white"} px-8 py-2 rounded-full text-primary shadow-md`}>
                     Join
                   </CustomNavLink>
+
+                  </ShowOnLogout>
+
+                  <ShowOnLogin>
                   <CustomNavLink href="/dashboard">
                     <ProfileCard>
                       <img src={User1} alt="" className="w-full h-full object-cover" />
                     </ProfileCard>
                   </CustomNavLink>
+                  </ShowOnLogin>
                 </div>
 
                 <div className={`icon flex items-center justify-center gap-6 ${isScrolled || !isHomePage ? "text-primary" : "text-white"}`}>

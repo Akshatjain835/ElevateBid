@@ -1,79 +1,64 @@
-import { FaFacebook, FaGoogle } from "react-icons/fa";
-import { Caption, Container, CustomNavLink, PrimaryButton, Title } from "../../router";
-import { commonClassNameOfInput } from "../../components/common/Design";
+import React from "react";
+import {Caption,Title} from '../../routes/common/AllRoutes.jsx'
+import { commonClassNameOfInput, PrimaryButton } from '../../routes/common/AllRoutes.jsx'
+import { useDispatch, useSelector } from "react-redux";
+import {useRedirectLoggedOutUser} from "../../hooks/useRedirectLoggedOutUser.js";
 
-export const Register = () => {
+import { getUserProfile } from "../../redux/features/authSlice.js";
+import { useEffect } from "react";
+
+export const UserProfile = () => {
+
+    useRedirectLoggedOutUser('/login')
+
+    const {user}=useSelector((state)=>state.auth)
+    // console.log(user)
+   const dispatch=useDispatch()
+
+   useEffect(()=>{
+    dispatch(getUserProfile())
+   },[dispatch])
+     
   return (
     <>
-      <section className="regsiter pt-16 relative">
-        <div className="bg-green w-96 h-96 rounded-full opacity-20 blur-3xl absolute top-2/3"></div>
-        <div className="bg-[#241C37] pt-8 h-[40vh] relative content">
-          <Container>
-            <div>
-              <Title level={3} className="text-white">
-                Sign Up
-              </Title>
-              <div className="flex items-center gap-3">
-                <Title level={5} className="text-green font-normal text-xl">
-                  Home
-                </Title>
-                <Title level={5} className="text-white font-normal text-xl">
-                  /
-                </Title>
-                <Title level={5} className="text-white font-normal text-xl">
-                  Sign Up
-                </Title>
-              </div>
-            </div>
-          </Container>
+      <section className="shadow-s1 p-8 rounded-lg">
+        <div className="profile flex items-center gap-8">
+          <img src={user?.photo} alt="" className="w-24 h-24 rounded-full object-cover" />
+          <div>
+            <Title level={5} className="capitalize">
+                {/* Akshat JAIN */}
+              {user?.name}
+            </Title>
+            <Caption>{user?.email}</Caption>
+          </div>
         </div>
-        <form className="bg-white shadow-s3 w-1/3 m-auto my-16 p-8 rounded-xl">
-          <div className="text-center">
-            <Title level={5}>Sign Up</Title>
-            <p className="mt-2 text-lg">
-              Do you already have an account? <CustomNavLink href="/login">Log In Here</CustomNavLink>
-            </p>
-          </div>
-          <div className="py-5">
-            <Caption className="mb-2">Username *</Caption>
-            <input type="text" name="name" className={commonClassNameOfInput} placeholder="First Name" required />
-          </div>
-          <div className="py-5">
-            <Caption className="mb-2">Enter Your Email *</Caption>
-            <input type="email" name="email" className={commonClassNameOfInput} placeholder="Enter Your Email" required />
-          </div>
-          <div>
-            <Caption className="mb-2">Password *</Caption>
-            <input type="password" name="password" className={commonClassNameOfInput} placeholder="Enter Your Password" required />
-          </div>
-          <div>
-            <Caption className="mb-2">Confirm Password *</Caption>
-            <input type="password" name="confirmPassword" className={commonClassNameOfInput} placeholder="Confirm password" />
-          </div>
-          <div className="flex items-center gap-2 py-4">
-            <input type="checkbox" />
-            <Caption>I agree to the Terms & Policy</Caption>
-          </div>
-          <PrimaryButton className="w-full rounded-none my-5">CREATE ACCOUNT</PrimaryButton>
-          <div className="text-center border py-4 rounded-lg mt-4">
-            <Title>OR SIGNUP WITH</Title>
-            <div className="flex items-center justify-center gap-5 mt-5">
-              <button className="flex items-center gap-2 bg-red-500 text-white p-3 px-5 rounded-sm">
-                <FaGoogle />
-                <p className="text-sm">SIGNUP WHIT GOOGLE</p>
-              </button>
-              <button className="flex items-center gap-2 bg-indigo-500 text-white p-3 px-5 rounded-sm">
-                <FaFacebook />
-                <p className="text-sm">SIGNUP WHIT FACEBOOK</p>
-              </button>
+        <form>
+          <div className="flex items-center gap-5 mt-10">
+            <div className="w-full">
+              <Caption className="mb-2">Full Name </Caption>
+              <input type="search" className={`capitalize ${commonClassNameOfInput}`} placeholder="Sunil" readOnly />
             </div>
           </div>
-          <p className="text-center mt-5">
-            By clicking the signup button, you create a Cobiro account, and you agree to Cobiros <span className="text-green underline">Terms & Conditions</span> &
-            <span className="text-green underline"> Privacy Policy </span> .
-          </p>
+          <div className="flex items-center gap-5 mt-10">
+            <div className="w-1/2">
+              <Caption className="mb-2">Contact Number</Caption>
+              <input type="search" value={user?.phone} className={commonClassNameOfInput} placeholder="Contact Number" />
+            </div>
+            <div className="w-1/2">
+              <Caption className="mb-2">Email</Caption>
+              <input type="search" value={user?.email} className={commonClassNameOfInput} placeholder="example@gmail.com" disabled />
+            </div>
+          </div>
+          <div className="my-8">
+            <Caption className="mb-2">Role</Caption>
+            <input type="search" value={user?.role} className={commonClassNameOfInput}  required />
+          </div>
+          <div className="my-8">
+            <Caption className="mb-2">Profile Picture</Caption>
+            <input type="search" value={user?.photo} className={commonClassNameOfInput} placeholder="Working" required />
+          </div>
+          <PrimaryButton>Update Profile</PrimaryButton>
         </form>
-        <div className="bg-green w-96 h-96 rounded-full opacity-20 blur-3xl absolute bottom-96 right-0"></div>
       </section>
     </>
   );
