@@ -49,7 +49,65 @@ export const summaryApi={
     getAllCategory:{
         url:`${BACKEND_URL}/api/category/`,
         method:'get'
+    },
+    deleteCategory:{
+        url:`${BACKEND_URL}/api/category/`,
+        method:'delete'
+    },
+    updateCategory:{
+        url:`${BACKEND_URL}/api/category/`,
+        method:'put'
+    },
+
+    //product
+    createProduct:{
+        url:`${BACKEND_URL}/api/product/`,
+        method:'post'
+    },
+    getAllProduct:{
+        url:`${BACKEND_URL}/api/product/`,
+        method:'get'
+    },
+    getAllProductOfUser:{
+        url:`${BACKEND_URL}/api/product/users/`,
+        method:'get'
+    },
+    getAllWonedProductOfUser:{
+        url:`${BACKEND_URL}/api/product/users`,
+        method:'get'
+    },
+
+    //product seller
+    deleteProduct:{
+        url:`${BACKEND_URL}/api/product/seller`,
+        method:'delete'
+    },
+
+    //admin
+   
+    updateProductByAdmin:{
+        url:`${BACKEND_URL}/api/admin/product`,   
+        method:'put'
+    },
+    deleteProductByAdmin:{
+        url:`${BACKEND_URL}/api/admin/product/`,
+        method:'delete'
+    },
+
+    //bidding
+    placeBid:{
+        url:`${BACKEND_URL}/api/bidding/`,
+        method:'post'
+    },
+    fetchBiddingHistory:{
+        url:`${BACKEND_URL}/api/bidding/`,
+        method:'get'
+    },
+    sellproductsbyuser:{
+        url:`${BACKEND_URL}/api/bidding/sell`,
+        method:'post'
     }
+
 }
 export default summaryApi;
 

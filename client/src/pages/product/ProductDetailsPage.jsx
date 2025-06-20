@@ -7,19 +7,42 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllProduct, getProduct } from "../../redux/features/productSlice.js";
 import { useParams } from "react-router-dom";
 import { DateFormatter } from "../../utils/DateFormatter.js";
+import { fetchBiddingHistory, placeBid } from "../../redux/features/biddingSlice.js";
 
 export const ProductsDetailsPage = () => {
   const dispatch=useDispatch()
   const {id}=useParams()
   const {product,isLoading}=useSelector((state)=>state.product)
+  const {history}=useSelector((state)=>state.bidding)
 
+  const [rate,setRate]=useState()
   const [activeTab, setActiveTab] = useState("description");
+
+
 
   useEffect(()=>{
     dispatch(getProduct(id))
   },[dispatch,id])
 
   // console.log(product)
+
+  useEffect(()=>{
+    if(product && !product.isSoldout){
+      dispatch(fetchBiddingHistory(id))
+    }
+  },[dispatch,id,product])
+
+  // console.log(history)
+
+  const save=async(e)=>{
+    e.preventDefault();
+    await dispatch(placeBid({price:rate,productId:id,isAutoBid:false}))
+  }
+
+  const incrementBid=async(e)=>{
+    e.preventDefault();
+    await dispatch(placeBid({price:rate,productId:id}))
+  }
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -91,12 +114,12 @@ export const ProductsDetailsPage = () => {
                 Current bid:<Caption className="text-3xl">${product?.currentBid} </Caption>
               </Title>
               <div className="p-5 px-10 shadow-s3 py-8">
-                <form className="flex gap-3 justify-between">
-                  <input className={commonClassNameOfInput} type="number" name="price" />
-                  <button type="button" className="bg-gray-100 rounded-md px-5 py-3">
+                <form onSubmit={save} className="flex gap-3 justify-between">
+                  <input value={rate} onChange={(e)=>setRate(e.target.value)} min={product?.price} className={commonClassNameOfInput} type="number" name="price" />
+                  <button type="button" onClick={incrementBid} className="bg-gray-100 rounded-md px-5 py-3">
                     <AiOutlinePlus />
                   </button>
-                  <button type="submit" className={`py-3 px-8 rounded-lg ${"bg-gray-400 text-gray-700 cursor-not-allowed"}`}>
+                  <button type="submit" className={`py-3 px-8 rounded-lg ${product?.isSoldout || !product?.isVerified ?  "bg-green text-white cursor-pointer" : "bg-gray-400  text-gray-700 cursor-not-allowed"  } ` } disabled={rate<=product?.price || rate<=product?.currentBid || product?.isSoldout || !product?.isVerified}>
                     Submit
                   </button>
                 </form>
@@ -185,7 +208,7 @@ export const ProductsDetailsPage = () => {
                   </div>
                 </div>
               )}
-              {activeTab === "auctionHistory" && <AuctionHistory />}
+              {activeTab === "auctionHistory" && <AuctionHistory history={history} />}
               {activeTab === "reviews" && (
                 <div className="reviews-tab shadow-s3 p-8 rounded-md">
                   <Title level={5} className=" font-normal">
@@ -209,7 +232,9 @@ export const ProductsDetailsPage = () => {
     </>
   );
 };
-export const AuctionHistory = () => {
+
+
+export const AuctionHistory = ({history}) => {
   return (
     <>
       <div className="shadow-s1 p-8 rounded-lg">
@@ -217,7 +242,9 @@ export const AuctionHistory = () => {
           Auction History
         </Title>
         <hr className="my-5" />
-
+{history.length===0? (
+    <h2 className="m-2">No bidding Record found</h2>
+):(
         <div className="relative overflow-x-auto rounded-lg">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500">
             <thead className="text-xs text-gray-700 uppercase bg-gray-100">
@@ -237,15 +264,20 @@ export const AuctionHistory = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white border-b hover:bg-gray-50">
-                <td className="px-6 py-4">December 31, 2024 12:00 am</td>
-                <td className="px-6 py-4">$200</td>
-                <td className="px-6 py-4">Sunil Pokhrel</td>
-                <td className="px-6 py-4"> </td>
+
+              {history.map((item,index)=>(
+              <tr className="bg-white border-b hover:bg-gray-50" key={index}>
+                <td className="px-6 py-4"><DateFormatter date={item?.createdAt} /></td>
+                <td className="px-6 py-4">${item?.price}</td>
+                <td className="px-6 py-4">{item?.user?.name}</td>
+                <td className="px-6 py-4">{item?.isAutoBid ? "Yes" : "No"}</td>
               </tr>
+              ))}
+
             </tbody>
           </table>
         </div>
+        )}
       </div>
     </>
   );
