@@ -4,12 +4,13 @@ import { Title, PrimaryButton, ProfileCard } from "../../routes/common/AllRoutes
 import { TiEyeOutline } from "react-icons/ti";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineDeleteOutline } from "react-icons/md";
-import { User2 } from "../../routes/common/AllRoutes.jsx";
 import { useRedirectLoggedOutUser } from "../../hooks/useRedirectLoggedOutUser.js";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { deleteCategory, getAllCategory } from "../../redux/features/categorySlice.js";
-import { DateFormatter } from "../../utils/DateFormatter.js"
+
+import { toast } from "react-toastify";
+import { DateFormatter } from "../../utils/DateFormatter.jsx";
 
 export const Catgeorylist = () => {
 

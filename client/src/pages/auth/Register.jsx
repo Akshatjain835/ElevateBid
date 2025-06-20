@@ -4,6 +4,8 @@ import { commonClassNameOfInput } from '../../routes/common/AllRoutes.jsx'
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../redux/features/authSlice";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
 const initialState={
   name:'',

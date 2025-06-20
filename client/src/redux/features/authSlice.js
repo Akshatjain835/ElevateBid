@@ -7,6 +7,7 @@ import authService from "../services/authFeature.js";
 const initialState = {
     user:JSON.parse(localStorage.getItem('user'))||null,
     users:[],
+    income:null,
     isLoading:false,
     isError:false,
     isSuccess:false,
@@ -77,7 +78,40 @@ export const loginUserAsSeller=createAsyncThunk('auth/login-as-seller',async(use
     }
 })
 
-const authSlice = createSlice({
+export const getUserIncome=createAsyncThunk('auth/get-income',async(thunkAPI)=>{
+    try{
+        const response= await authService.getUserIncome()
+        return await authService.getUserIncome()
+    }catch(error){
+        const message=error.response.data.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+        toast.error(message)
+    }
+})
+
+export const getIncome=createAsyncThunk('auth/get-income-of-admin',async(thunkAPI)=>{
+    try{
+        const response= await authService.getIncome()
+        return await authService.getIncome()
+    }catch(error){
+        const message=error.response.data.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+        toast.error(message)
+    }
+})
+
+export const getAllUser=createAsyncThunk('auth/getallusers',async(thunkAPI)=>{
+    try{
+        const response= await authService.getAllUser()
+        return await authService.getAllUser()
+    }catch(error){
+        const message=error.response.data.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+        toast.error(message)
+    }
+})
+
+const authSlice = createSlice({ 
     name: "auth",
     initialState,
     reducers: {
@@ -208,6 +242,7 @@ const authSlice = createSlice({
         .addCase(loginUserAsSeller.fulfilled,(state,action)=>{
             state.isLoading=false
             state.isSuccess=true
+
             state.user=action.payload
             state.isLoggedIn=true
             localStorage.setItem('user',JSON.stringify(action.payload))
@@ -217,7 +252,80 @@ const authSlice = createSlice({
             state.isLoading=false
             state.isError=true
             state.user=null
+            state.isLoggedIn=true
             state.message=action.payload
+            toast.error(action.payload)
+        })
+
+        .addCase(getUserIncome.pending,(state)=>{
+            state.isLoading=true
+            state.isLoggedIn=false
+            state.isSuccess=false
+            state.isError=false
+            state.message=''
+        })
+        .addCase(getUserIncome.fulfilled,(state,action)=>{
+            state.isLoading=false
+            state.isSuccess=true
+            state.isLoggedIn=true
+            state.user=action.payload
+            state.income=action.payload
+            toast.success(action.payload)
+        })
+        .addCase(getUserIncome.rejected,(state,action)=>{   
+            state.isLoading=false
+            state.isError=true
+            state.user=null
+            state.message=action.payload
+            state.isLoggedIn=true
+            toast.error(action.payload)
+        })
+
+        .addCase(getIncome.pending,(state)=>{
+            state.isLoading=true
+            state.isLoggedIn=false
+            state.isSuccess=false
+            state.isError=false
+            state.message=''
+        })
+
+        .addCase(getIncome.fulfilled,(state,action)=>{
+            state.isLoading=false
+            state.isSuccess=true
+            state.isLoggedIn=true
+            state.income=action.payload
+            toast.success(action.payload)
+        })
+        .addCase(getIncome.rejected,(state,action)=>{
+            state.isLoading=false
+            state.isError=true
+            state.user=null
+            state.message=action.payload
+            state.isLoggedIn=true
+            toast.error(action.payload)
+        })
+
+        .addCase(getAllUser.pending,(state)=>{
+            state.isLoading=true
+            state.isLoggedIn=false
+            state.isSuccess=false
+            state.isError=false
+            state.message=''
+        })
+        .addCase(getAllUser.fulfilled,(state,action)=>{
+            state.isLoading=false
+            state.isSuccess=true
+            state.isLoggedIn=true
+            state.users=action.payload
+            state.totalUsers=action.payload?.length
+            toast.success(action.payload)
+        })  
+        .addCase(getAllUser.rejected,(state,action)=>{
+            state.isLoading=false
+            state.isError=true
+            state.user=null
+            state.message=action.payload
+            state.isLoggedIn=true
             toast.error(action.payload)
         })
     }

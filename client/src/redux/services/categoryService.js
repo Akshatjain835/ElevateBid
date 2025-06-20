@@ -6,13 +6,26 @@ const createCategory=async(formData)=>{
     return response.data
 }
 
-const getCategory=async()=>{
-    const response=await axios.get(summaryApi.getCategory.url,formData)
+const getAllCategory=async()=>{
+    const response=await axios.get(summaryApi.getAllCategory.url,formData)
+    return response.data
+}
+
+const deleteCategory=async(id)=>{
+    const response=await axios.delete(`${summaryApi.deleteCategory.url}/${id}`)
+    return response.data
+}
+
+const updateCategory=async(id,formData)=>{
+    const response=await axios.put(`${summaryApi.updateCategory.url}/${id}`,formData)
     return response.data
 }
 
 const categoryService={
-    createCategory
+    createCategory,
+    getAllCategory,
+    deleteCategory,
+    updateCategory
 }
 
 export default categoryService;

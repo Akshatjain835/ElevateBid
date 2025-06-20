@@ -1,6 +1,6 @@
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { Caption, Container, CustomNavLink, PrimaryButton, Title,commonClassNameOfInput } from "../../routes/common/AllRoutes.jsx";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { loginUserAsSeller } from "../../redux/features/authSlice.js";
 import { toast } from "react-toastify";

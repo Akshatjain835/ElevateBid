@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useRedirectLoggedOutUser } from "../hooks/useRedirectLoggedOutUser";
-import { Title } from "../router";
+import { Title } from "../routes/common/AllRoutes.jsx";
 import { CgDollar } from "react-icons/cg";
-import { getIncome } from "../redux/features/authSlice";
+import { useEffect } from "react";
 
 export const Income = () => {
 

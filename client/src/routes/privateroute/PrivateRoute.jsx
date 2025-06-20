@@ -2,7 +2,7 @@
 // ...import other private components
 
 import { Catgeorylist } from "../../admin/category/CategoryList";
-import { CreateCategory } from "../../admin/category/CreateCategory";
+import { CreateCategory } from "../../admin/category/CreateCategory.jsx";
 import { UpdateCategory } from "../../admin/category/UpdateCategory";
 import { Income } from "../../admin/Income";
 import { UserList } from "../../admin/UserList";

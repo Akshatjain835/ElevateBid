@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
+
 const Container = ({ children, className }) => {
   return <div className={`${className} w-[85%] m-auto`}>{children}</div>;
 };

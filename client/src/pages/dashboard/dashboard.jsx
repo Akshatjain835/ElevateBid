@@ -18,7 +18,7 @@ export const Dashboard = () => {
     const {income,users}=useSelector((state)=>state.auth)
     // console.log(income)
     const dispatch = useDispatch()
-    )
+    
     const {products,userproducts,wonedproducts,product}=useSelector((state)=>state.product)
 
     useEffect(() => {
@@ -62,14 +62,14 @@ export const Dashboard = () => {
                             <div className="shadow-s3 border border-green bg-green_100 p-8 flex items-center text-center justify-center gap-5 flex-col rounded-xl">
                                 <CiMedal size={80} className="text-green" />
                                 <div>
-                                    <Title level={1}>2</Title>
+                                    <Title level={1}>{wonedproducts?.length}</Title>
                                     <Title>Items Won</Title>
                                 </div>
                             </div>
                             <div className="shadow-s3 border border-green bg-green_100 p-8 flex items-center text-center justify-center gap-5 flex-col rounded-xl">
                                 <GiBarbedStar size={80} className="text-green" />
                                 <div>
-                                    <Title level={1}>100</Title>
+                                    <Title level={1}>{userproducts?.length}</Title>
                                     <Title>Your Products </Title>
                                 </div>
                             </div>
@@ -78,14 +78,14 @@ export const Dashboard = () => {
                                     <div className="shadow-s3 border border-green bg-green_100 p-8 flex items-center text-center justify-center gap-5 flex-col rounded-xl">
                                         <MdOutlineCategory size={80} className="text-green" />
                                         <div>
-                                            <Title level={1}>50</Title>
+                                            <Title level={1}>{products?.length}</Title>
                                             <Title>All Products </Title>
                                         </div>
                                     </div>
                                     <div className="shadow-s3 border border-green bg-green_100 p-8 flex items-center text-center justify-center gap-5 flex-col rounded-xl">
                                         <HiOutlineUsers size={80} className="text-green" />
                                         <div>
-                                            <Title level={1}>100</Title>
+                                            <Title level={1}>{users?.length}</Title>
                                             <Title>All Users </Title>
                                         </div>
                                     </div>

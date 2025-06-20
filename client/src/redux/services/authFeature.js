@@ -37,12 +37,33 @@ const loginUserAsSeller=async()=>{
     return response.data.message
 }
 
+const getUserIncome=async()=>{
+    const response=await axios.get(summaryApi.getUserIncome.url,userData)
+    return response.data.message
+}
+
+//only for admin's
+
+const getIncome=async()=>{
+    const response=await axios.get(summaryApi.getIncome.url,userData)
+    return response.data.message
+}
+
+const getAllUser=async()=>{
+    const response=await axios.get(summaryApi.getAllUser.url,userData)
+    return response.data.message
+}
+
 const authService={
     register,
     login,
     logout,
     getLoginStatus,
     getUserProfile,
+    loginUserAsSeller,
+    getUserIncome,
+    getIncome,
+    getAllUser
 }
 
 export default authService;

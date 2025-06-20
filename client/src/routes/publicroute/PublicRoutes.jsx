@@ -38,14 +38,7 @@ const publicRoutes = [
       </Layout>
     ),
   },
-  {
-    path: '/*',
-    element: (
-      <Layout>
-        <NotFound />
-      </Layout>
-    ),
-  },
+
 ];
 
 

@@ -6,8 +6,10 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProduct, getProduct } from "../../redux/features/productSlice.js";
 import { useParams } from "react-router-dom";
-import { DateFormatter } from "../../utils/DateFormatter.js";
+import { DateFormatter } from "../../utils/DateFormatter.jsx";
 import { fetchBiddingHistory, placeBid } from "../../redux/features/biddingSlice.js";
+import { toast } from "react-toastify";
+import { Loader } from "../../components/common/Loader.jsx";
 
 export const ProductsDetailsPage = () => {
   const dispatch=useDispatch()
@@ -15,7 +17,7 @@ export const ProductsDetailsPage = () => {
   const {product,isLoading}=useSelector((state)=>state.product)
   const {history}=useSelector((state)=>state.bidding)
 
-  const [rate,setRate]=useState()
+  const [rate,setRate]=useState(0)
   const [activeTab, setActiveTab] = useState("description");
 
 
@@ -34,19 +36,55 @@ export const ProductsDetailsPage = () => {
 
   // console.log(history)
 
-  const save=async(e)=>{
-    e.preventDefault();
-    await dispatch(placeBid({price:rate,productId:id,isAutoBid:false}))
-  }
+  useEffect(()=>{
+     if(history && history.length>0){
+         const highestBid=Math.max(...history.map((bid)=>bid.price))
+         setRate(highestBid)
+     }else if(product){
+      setRate(product.price)
+     }
+  },[history,product])
+
+ 
 
   const incrementBid=async(e)=>{
-    e.preventDefault();
-    await dispatch(placeBid({price:rate,productId:id}))
+    setRate((prevRate)=>prevRate+1)
   }
+
+  // console.log(product)
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
+
+  const save=async(e)=>{
+             e.preventDefault()
+
+             if(product.price>rate){
+               return toast.error("Your Bid amount must be equal to or higher than the Product price")
+             }
+
+             const formData={
+              price:rate,
+              productId:id,
+             }
+
+             try {
+              const response=await dispatch(placeBid(formData)).unwrap()
+              if(response.success){
+                toast.success("Bid placed successfully")
+                
+              }
+              dispatch(fetchBiddingHistory(id))
+             } catch (error) {
+                 return toast.error(error.message || "Something went wrong")
+             }
+
+  }
+
+  if(isLoading){
+    return <Loader/>
+  }
   
   return (
     <>
@@ -77,7 +115,7 @@ export const ProductsDetailsPage = () => {
               <br />
               <Caption>Item condition: New</Caption>
               <br />
-              <Caption>Item Verifed: {product?.isVerified ? "Yes" : "No"}</Caption>
+              <Caption>Item Verifed: {product?.isVerify ? "Yes" : "No"}</Caption>
               <br />
               <Caption>Time left:</Caption>
               <br />
@@ -111,7 +149,7 @@ export const ProductsDetailsPage = () => {
                 Price:<Caption>${product?.price} </Caption>
               </Title>
               <Title className="flex items-center gap-2">
-                Current bid:<Caption className="text-3xl">${product?.currentBid} </Caption>
+                Current bid:<Caption className="text-3xl">${rate} </Caption>
               </Title>
               <div className="p-5 px-10 shadow-s3 py-8">
                 <form onSubmit={save} className="flex gap-3 justify-between">
@@ -119,7 +157,7 @@ export const ProductsDetailsPage = () => {
                   <button type="button" onClick={incrementBid} className="bg-gray-100 rounded-md px-5 py-3">
                     <AiOutlinePlus />
                   </button>
-                  <button type="submit" className={`py-3 px-8 rounded-lg ${product?.isSoldout || !product?.isVerified ?  "bg-green text-white cursor-pointer" : "bg-gray-400  text-gray-700 cursor-not-allowed"  } ` } disabled={rate<=product?.price || rate<=product?.currentBid || product?.isSoldout || !product?.isVerified}>
+                  <button type="submit" className={`py-3 px-8 rounded-lg ${product?.isSoldout || !product?.isVerify ?   "bg-gray-400  text-gray-700 cursor-not-allowed" : "bg-green text-white cursor-pointer"  } ` } disabled={rate<=product?.price || rate<=product?.currentBid || product?.isSoldout || !product?.isVerify}>
                     Submit
                   </button>
                 </form>
@@ -189,7 +227,7 @@ export const ProductsDetailsPage = () => {
                       </div>
                       <div className="flex justify-between py-3 border-b">
                         <Title>verify</Title>
-                        {product?.isVerified ? <Caption>Yes</Caption> : <Caption>No</Caption>}
+                        {product?.isVerify ? <Caption>Yes</Caption> : <Caption>No</Caption>}
                       </div>
                       <div className="flex justify-between py-3 border-b">
                         <Title>Create At</Title>

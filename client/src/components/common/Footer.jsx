@@ -6,6 +6,7 @@ import { FaInstagram } from "react-icons/fa";
 import { CiLinkedin, CiTwitter } from "react-icons/ci";
 import { AiOutlineYoutube } from "react-icons/ai";
 import { useLocation } from "react-router-dom";
+import { Loader } from "./Loader.jsx";
 
 export const Footer = () => {
 

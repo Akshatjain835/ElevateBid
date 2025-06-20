@@ -6,6 +6,7 @@ import { useRedirectLoggedOutUser } from "../../../hooks/useRedirectLoggedOutUse
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct, getAllProductOfUser } from "../../../redux/features/productSlice";
 import { Loader } from "../../../components/common/Loader";
+import { sellproductsbyuser } from "../../../redux/features/biddingSlice";
 
 export const ProductList = () => {
     useRedirectLoggedOutUser('/')
@@ -22,6 +23,19 @@ export const ProductList = () => {
     const handleDeleteProduct=async(id)=>{
         await dispatch(deleteProduct(id))
         await dispatch(getAllProductOfUser())
+    }
+
+    const handleSellProduct=async(productId)=>{
+
+       try {
+        const response=await dispatch(sellproductsbyuser({productId:productId})).unwrap()
+        if(response.success){
+          toast.success("Product sold successfully")
+        }
+        dispatch(getAllProductOfUser())
+       } catch (error) {
+        toast.error(error.message || "Something went wrong")
+       }
     }
 
     if(isLoading){
@@ -52,7 +66,7 @@ export const ProductList = () => {
           </NavLink>
         </div>
         <hr className="my-5" />
-        <Table products={userproducts} handleDeleteProduct={handleDeleteProduct}/>
+        <Table products={userproducts} handleDeleteProduct={handleDeleteProduct} handleSellProduct={handleSellProduct}/>
       </section>
     </>
   );
