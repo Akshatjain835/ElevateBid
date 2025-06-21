@@ -42,4 +42,4 @@ const publicRoutes = [
 ];
 
 
-export default PublicRoutes;
+export default publicRoutes;

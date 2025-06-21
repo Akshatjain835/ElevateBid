@@ -5,8 +5,9 @@ import authService from "../services/authFeature.js";
 
 
 const initialState = {
-    user:JSON.parse(localStorage.getItem('user'))||null,
+    user:null,
     users:[],
+    isLoggedIn:false,
     income:null,
     isLoading:false,
     isError:false,

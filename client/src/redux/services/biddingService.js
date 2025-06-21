@@ -12,7 +12,7 @@ const fetchBiddingHistory=async(id)=>{
 }
 
 const sellproductsbyuser=async(productId)=>{
-    const response=await axios.post(summaryApi.sellProductsbyuser.url,productId)
+    const response=await axios.post(summaryApi.sellproductsbyuser.url,productId)
     return response.data
 }
 
@@ -22,4 +22,4 @@ const biddingService={
     sellproductsbyuser
 }
 
-export default bidService;
+export default biddingService;

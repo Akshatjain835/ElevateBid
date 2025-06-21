@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../redux/features/authSlice.js";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const initialState={
     name:'',
@@ -21,7 +21,7 @@ export const Login = () => {
     const [formData,setFormData]=useState(initialState)
     const {email,password}=formData
 
-     const {isLoading,isError,isSuccess,message}=useSelector((state)=>state.auth)
+     const {isLoading,isError,isSuccess,message,isLoggedIn}=useSelector((state)=>state.auth)
     
      const handleInputChange=(e)=>{
        const {name,value}=e.target
@@ -45,12 +45,12 @@ export const Login = () => {
 
         if(isLoggedIn){
             toast.success(message)
-            navigate('/dashboard')
+            navigate('/')
         }
 
     
 
-     },[navigate,isError,isLoggedIn])
+     },[navigate,isError,isSuccess,isLoggedIn])
   return (
     <>
       <section className="regsiter pt-16 relative">

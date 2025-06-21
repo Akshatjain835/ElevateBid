@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserProfile, selectIsLoggedIn } from "../redux/features/authSlice";
 import { useEffect } from "react";
@@ -9,7 +9,7 @@ export const useUserProfile=()=>{
     
     const isLoggedIn=useSelector(selectIsLoggedIn)
     const {user,isloading}=useSelector((state)=>state.auth)
-    const {role,setRole}=useState(()=>user?.role || JSON.parse(localStorage.getItem('user'))?.role)
+    const {role,setRole}=useState(()=>user?.role)
 
     useEffect(()=>{
         if(isloading && !user){

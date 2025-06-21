@@ -115,4 +115,4 @@ const privateRoutes = [
   ];
   
 
-export default PrivateRoutes;
+export default privateRoutes;

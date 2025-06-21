@@ -7,7 +7,7 @@ const createCategory=async(formData)=>{
 }
 
 const getAllCategory=async()=>{
-    const response=await axios.get(summaryApi.getAllCategory.url,formData)
+    const response=await axios.get(summaryApi.getAllCategory.url)
     return response.data
 }
 
