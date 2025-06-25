@@ -5,7 +5,7 @@ import authService from "../services/authFeature.js";
 
 
 const initialState = {
-    user:null,
+    user:JSON.parse(localStorage.getItem('user')) || null,
     users:[],
     isLoggedIn:false,
     income:null,
@@ -135,15 +135,14 @@ const authSlice = createSlice({
             state.isSuccess=true
             state.isLoggedIn=true
             state.user=action.payload
-            toast.success(action.payload)
         })
         .addCase(register.rejected,(state,action)=>{
             state.isLoading=false   
             state.isError=true
-            state.user=null
-
             state.message=action.payload
+            state.user=null
             toast.error(action.payload)
+            
         })
         .addCase(login.pending,(state)=>{
             state.isLoading=true
@@ -163,28 +162,27 @@ const authSlice = createSlice({
             state.message=action.payload
             toast.error(action.payload)
         })
+
         .addCase(logout.pending,(state)=>{
             state.isLoading=true
-            state.isLoggedIn=false
-            state.isSuccess=false
-            state.isError=false
-            state.message=''
+            
         })
         .addCase(logout.fulfilled,(state,action)=>{
             state.isLoading=false
             state.isSuccess=true
-            state.user=null
             state.isLoggedIn=false
+            state.user=null
             state.message=action.payload
             toast.success(action.payload)
         })  
         .addCase(logout.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
-            state.user=null
+         
             state.message=action.payload
             toast.error(action.payload)
         })  
+
         .addCase(getLoginStatus.pending,(state)=>{
             state.isLoading=true
             state.isLoggedIn=false

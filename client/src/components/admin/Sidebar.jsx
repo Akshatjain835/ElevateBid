@@ -10,18 +10,32 @@ import { CgProductHunt } from "react-icons/cg";
 import { TbCurrencyDollar } from "react-icons/tb";
 import { FiUser } from "react-icons/fi";
 import { FaPlusCircle } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { RESET } from "../../redux/features/authSlice";
+import { logout } from "../../redux/features/authSlice";
+import { toast } from "react-toastify";
 
 export const Sidebar = () => {
   const location = useLocation();
+  const dispatch=useDispatch()
+  const navigate=useNavigate()
+  
 
   const role = "admin";
-  const className = "flex items-center gap-3 mb-2 p-4 rounded-full";
+  const className = "flex items-center gap-3  p-4 rounded-full";
+
+  const logoutUser=async()=>{
+    dispatch(RESET())
+    await dispatch(logout())
+    toast.success("Logout successfull")
+    navigate("/")
+  }
 
   return (
     <>
       <section className="sidebar flex flex-col justify-between h-full">
-        <div className="profile flex items-center text-center justify-center gap-8 flex-col mb-8">
+        <div className="profile flex items-center text-center justify-center gap-2 flex-col ">
           <img src={User1} alt="" className="w-32 h-32 rounded-full object-cover" />
           <div>
             <Title className="capitalize">Akshat</Title>
@@ -106,7 +120,7 @@ export const Sidebar = () => {
             <span>Personal Profile</span>
           </CustomNavLink>
 
-          <button className="flex items-center w-full gap-3 mt-4 bg-red-500 mb-3 hover:text-white p-4 rounded-full text-white">
+          <button className="flex items-center w-full gap-3 mt-4 bg-red-500 mb-3 hover:text-white p-4 rounded-full text-white" onClick={logoutUser}>
             <span>
               <IoIosLogOut size={22} />
             </span>
