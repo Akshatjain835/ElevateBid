@@ -11,19 +11,33 @@ import { TbCurrencyDollar } from "react-icons/tb";
 import { FiUser } from "react-icons/fi";
 import { FaPlusCircle } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { RESET } from "../../redux/features/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserProfile, RESET } from "../../redux/features/authSlice";
 import { logout } from "../../redux/features/authSlice";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
+import { useUserProfile } from "../../hooks/useUserProfile";
 
 export const Sidebar = () => {
+  // useRedirectLoggedOutUser('/login')
+
   const location = useLocation();
   const dispatch=useDispatch()
   const navigate=useNavigate()
+  const {user}=useSelector((state)=>state.auth)
+  // console.log(user)
+  const {role,isLoggedIn}=useUserProfile()
   
 
-  const role = "admin";
-  const className = "flex items-center gap-3  p-4 rounded-full";
+useEffect(()=>{
+  if(isLoggedIn){
+    dispatch(getUserProfile())
+  }
+},[dispatch,isLoggedIn])
+
+if(!isLoggedIn){
+  return <p>You need to log in to access the page</p>
+}
 
   const logoutUser=async()=>{
     dispatch(RESET())
@@ -32,14 +46,17 @@ export const Sidebar = () => {
     navigate("/")
   }
 
+    // const role = "admin";
+    const className = "flex items-center gap-3  p-4 rounded-full";
+
   return (
     <>
       <section className="sidebar flex flex-col justify-between h-full">
         <div className="profile flex items-center text-center justify-center gap-2 flex-col ">
-          <img src={User1} alt="" className="w-32 h-32 rounded-full object-cover" />
+          <img src={user?.photo} alt="" className="w-32 h-32 rounded-full object-cover" />
           <div>
-            <Title className="capitalize">Akshat</Title>
-            <Caption>example@gmail.com</Caption>
+            <Title className="capitalize">{user?.name}</Title>
+            <Caption>{user?.email}</Caption>
           </div>
         </div>
 
@@ -53,13 +70,13 @@ export const Sidebar = () => {
 
           {(role === "seller" || role === "admin") && (
             <>
-              <CustomNavLink href="/product" isActive={location.pathname === "/product"} className={className}>
+              <CustomNavLink href="/product/list" isActive={location.pathname === "/product/list"} className={className}>
                 <span>
                   <MdOutlineCategory size={22} />
                 </span>
                 <span>My Products</span>
               </CustomNavLink>
-              <CustomNavLink href="/add" isActive={location.pathname === "/add"} className={className}>
+              <CustomNavLink href="/product/add" isActive={location.pathname === "/product/add"} className={className}>
                 <span>
                   <FaPlusCircle size={22} />
                 </span>
@@ -72,7 +89,7 @@ export const Sidebar = () => {
 
           {role === "admin" && (
             <>
-              <CustomNavLink href="/userlist" isActive={location.pathname === "/userlist"} className={className}>
+              <CustomNavLink href="/userlist" isActive={location.pathname === "/userlist"}  className={className}>
                 <span>
                   <FiUser size={22} />
                 </span>

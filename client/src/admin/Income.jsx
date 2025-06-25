@@ -3,10 +3,11 @@ import { useRedirectLoggedOutUser } from "../hooks/useRedirectLoggedOutUser";
 import { Title } from "../routes/common/AllRoutes.jsx";
 import { CgDollar } from "react-icons/cg";
 import { useEffect } from "react";
+import { getIncome } from "../redux/features/authSlice.js";
 
 export const Income = () => {
 
-    useRedirectLoggedOutUser('/login')
+    // useRedirectLoggedOutUser('/login')
 
     const {income}=useSelector((state)=>state.auth)
     // console.log(income)

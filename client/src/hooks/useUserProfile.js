@@ -9,7 +9,7 @@ export const useUserProfile=()=>{
     
     const isLoggedIn=useSelector(selectIsLoggedIn)
     const {user,isloading}=useSelector((state)=>state.auth)
-    const {role,setRole}=useState(()=>user?.role)
+    const [role,setRole]=useState(()=>user?.role || JSON.parse(localStorage.getItem('user')))
 
     useEffect(()=>{
         if(isloading && !user){

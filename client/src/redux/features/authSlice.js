@@ -7,7 +7,7 @@ import authService from "../services/authFeature.js";
 const initialState = {
     user:JSON.parse(localStorage.getItem('user')) || null,
     users:[],
-    isLoggedIn:false,
+    isLoggedIn:!!JSON.parse(localStorage.getItem('user')),
     income:null,
     isLoading:false,
     isError:false,
@@ -19,6 +19,7 @@ export const register=createAsyncThunk('auth/register',async(userData,thunkAPI)=
     try{
         const response= await authService.register(userData)
         localStorage.setItem('user',JSON.stringify(response))
+        return response
     }catch(error){
         const message=error.response.data.message || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
@@ -29,40 +30,42 @@ export const login=createAsyncThunk('auth/login',async(userData,thunkAPI)=>{
     try{
         const response= await authService.login(userData)
         localStorage.setItem('user',JSON.stringify(response))
+        return response
     }catch(error){
         const message=error.response.data.message || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
     }
 })
 
-export const logout=createAsyncThunk('auth/logout',async(thunkAPI)=>{
+export const logout=createAsyncThunk('auth/logout',async(_,thunkAPI)=>{
     try{
         const response= await authService.logout()
         localStorage.removeItem('user')
-       
+        return response
     }catch(error){
         const message=error.response.data.message || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
-        toast.error(message)
     }
 })
 
-export const getLoginStatus=createAsyncThunk('auth/status',async(thunkAPI)=>{
+export const getLoginStatus=createAsyncThunk('auth/status',async(_,thunkAPI)=>{
     try{
+        // console.log("getLoginStatus - Starting API call")
         const response= await authService.getLoginStatus()
-        return response.data
+        // console.log("getLoginStatus - API response:", response)
+        return response
     }catch(error){
-        const message=error.response.data.message || error.message || error.toString()
+        // console.log("getLoginStatus - API error:", error)
+        const message=error.response?.data?.message || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
-        toast.error(message)
     }
 })
 
 
-export const getUserProfile=createAsyncThunk('auth/profile',async(thunkAPI)=>{
+export const getUserProfile=createAsyncThunk('auth/profile',async(_,thunkAPI)=>{
     try{
         const response= await authService.getUserProfile()
-        return await authService.getUserProfile()
+        return response
     }catch(error){
         const message=error.response.data.message || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
@@ -74,17 +77,17 @@ export const loginUserAsSeller=createAsyncThunk('auth/login-as-seller',async(use
     try{
         const response= await authService.loginUserAsSeller(userData)
         localStorage.setItem('user',JSON.stringify(response))
+        
     }catch(error){
         const message=error.response.data.message || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
-        toast.error(message)
     }
 })
 
-export const getUserIncome=createAsyncThunk('auth/get-income',async(thunkAPI)=>{
+export const getUserIncome=createAsyncThunk('auth/get-income',async(_,thunkAPI)=>{
     try{
         const response= await authService.getUserIncome()
-        return await authService.getUserIncome()
+        return response
     }catch(error){
         const message=error.response.data.message || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
@@ -92,10 +95,10 @@ export const getUserIncome=createAsyncThunk('auth/get-income',async(thunkAPI)=>{
     }
 })
 
-export const getIncome=createAsyncThunk('auth/get-income-of-admin',async(thunkAPI)=>{
+export const getIncome=createAsyncThunk('auth/get-income-of-admin',async(_,thunkAPI)=>{
     try{
         const response= await authService.getIncome()
-        return await authService.getIncome()
+        return response
     }catch(error){
         const message=error.response.data.message || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
@@ -103,10 +106,10 @@ export const getIncome=createAsyncThunk('auth/get-income-of-admin',async(thunkAP
     }
 })
 
-export const getAllUser=createAsyncThunk('auth/getallusers',async(thunkAPI)=>{
+export const getAllUser=createAsyncThunk('auth/getallusers',async(_,thunkAPI)=>{
     try{
         const response= await authService.getAllUser()
-        return await authService.getAllUser()
+        return response
     }catch(error){
         const message=error.response.data.message || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
@@ -154,8 +157,7 @@ const authSlice = createSlice({
             state.isSuccess=true
             state.user=action.payload
             state.isLoggedIn=true
-            toast.success(action.payload)
-
+            
         })  
         .addCase(login.rejected,(state,action)=>{
             state.isLoading=false
@@ -163,7 +165,7 @@ const authSlice = createSlice({
             state.user=null
             state.isLoggedIn=false
             state.message=action.payload
-            toast.error(action.payload)
+           
         })
 
         .addCase(logout.pending,(state)=>{
@@ -176,43 +178,45 @@ const authSlice = createSlice({
             state.isLoggedIn=false
             state.user=null
             state.message=action.payload
-            toast.success(action.payload)
+           
         })  
         .addCase(logout.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
             state.isLoggedIn=false
             state.message=action.payload
-            toast.error(action.payload)
+          
         })  
 
         .addCase(getLoginStatus.pending,(state)=>{
             state.isLoading=true
-          
-
 
         })
         .addCase(getLoginStatus.fulfilled,(state,action)=>{
+                // console.log("getLoginStatus.fulfilled - payload:", action.payload)
+                // console.log("getLoginStatus.fulfilled - current user:", state.user)
             state.isLoading=false
             state.isSuccess=true
             state.isLoggedIn=action.payload
-            
-            toast.success(action.payload)
+            if(action.payload && !state.user) {
+                const userFromStorage = JSON.parse(localStorage.getItem('user'))
+                // console.log("getLoginStatus.fulfilled - user from storage:", userFromStorage)
+                if(userFromStorage) {
+                    state.user = userFromStorage
+                }
+            }
+            console.log("getLoginStatus.fulfilled - final state:", { isLoggedIn: state.isLoggedIn, user: state.user })
         })  
         .addCase(getLoginStatus.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
             state.isLoggedIn=false
             state.message=action.payload
-            toast.error(action.payload)
         })  
 
         .addCase(getUserProfile.pending,(state)=>{
-            state.isLoading=false
-            state.isLoggedIn=false
-            state.isSuccess=false
-            state.isError=false
-            state.message=''
+            state.isLoading=true
+            
         })
         .addCase(getUserProfile.fulfilled,(state,action)=>{
             state.isLoading=false
@@ -220,7 +224,7 @@ const authSlice = createSlice({
             state.isLoggedIn=true
             state.user=action.payload
             localStorage.setItem('user',JSON.stringify(action.payload))
-            toast.success(action.payload)
+            
         })
         .addCase(getUserProfile.rejected,(state,action)=>{
             state.isLoading=false
@@ -229,64 +233,54 @@ const authSlice = createSlice({
             state.message=action.payload
             localStorage.removeItem('user')
             state.isLoggedIn=true
-            toast.error(action.payload)
+            
         })
 
         .addCase(loginUserAsSeller.pending,(state)=>{
             state.isLoading=true
-            state.isLoggedIn=false
-            state.isSuccess=false
-            state.isError=false
-            state.message=''
+           
         })
         .addCase(loginUserAsSeller.fulfilled,(state,action)=>{
             state.isLoading=false
             state.isSuccess=true
-
+         
             state.user=action.payload
-            state.isLoggedIn=true
-            localStorage.setItem('user',JSON.stringify(action.payload))
+             state.isError=false
+            
             toast.success("You are now logged in as a seller")
         })  
         .addCase(loginUserAsSeller.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
-            state.user=null
-            state.isLoggedIn=true
+            
             state.message=action.payload
+            state.user=null
             toast.error(action.payload)
         })
 
         .addCase(getUserIncome.pending,(state)=>{
             state.isLoading=true
-            state.isLoggedIn=false
-            state.isSuccess=false
-            state.isError=false
-            state.message=''
+            
         })
         .addCase(getUserIncome.fulfilled,(state,action)=>{
             state.isLoading=false
             state.isSuccess=true
             state.isLoggedIn=true
-            state.user=action.payload
+          
             state.income=action.payload
-            toast.success(action.payload)
+           
         })
         .addCase(getUserIncome.rejected,(state,action)=>{   
             state.isLoading=false
             state.isError=true
-            state.user=null
-            state.message=action.payload
+            
             state.isLoggedIn=true
-            toast.error(action.payload)
+            state.message=action.payload
         })
 
         .addCase(getIncome.pending,(state)=>{
             state.isLoading=true
-            state.isLoggedIn=false
-            state.isSuccess=false
-            state.isError=false
-            state.message=''
+            
         })
 
         .addCase(getIncome.fulfilled,(state,action)=>{
@@ -294,23 +288,20 @@ const authSlice = createSlice({
             state.isSuccess=true
             state.isLoggedIn=true
             state.income=action.payload
-            toast.success(action.payload)
+        
         })
         .addCase(getIncome.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
-            state.user=null
+          
             state.message=action.payload
             state.isLoggedIn=true
-            toast.error(action.payload)
+            
         })
 
         .addCase(getAllUser.pending,(state)=>{
             state.isLoading=true
-            state.isLoggedIn=false
-            state.isSuccess=false
-            state.isError=false
-            state.message=''
+            
         })
         .addCase(getAllUser.fulfilled,(state,action)=>{
             state.isLoading=false
@@ -318,15 +309,15 @@ const authSlice = createSlice({
             state.isLoggedIn=true
             state.users=action.payload
             state.totalUsers=action.payload?.length
-            toast.success(action.payload)
+          
         })  
         .addCase(getAllUser.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
-            state.user=null
+       
             state.message=action.payload
             state.isLoggedIn=true
-            toast.error(action.payload)
+            
         })
     }
 })

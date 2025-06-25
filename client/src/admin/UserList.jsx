@@ -10,7 +10,7 @@ import { useEffect } from "react";
 
 export const UserList = () => {
 
-    useRedirectLoggedOutUser('/login')
+    // useRedirectLoggedOutUser('/login')
 
     const dispatch = useDispatch()
     const { users } = useSelector((state) => state.auth)
@@ -21,6 +21,7 @@ export const UserList = () => {
 
     }, [dispatch])
 
+    
     // console.log(users)
 
 

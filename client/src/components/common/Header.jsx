@@ -7,8 +7,15 @@ import { IoSearchOutline } from "react-icons/io5";
 import { Container, CustomNavLink, CustomNavLinkList, ProfileCard } from "../../routes/common/AllRoutes";
 import { User1 } from "../hero/Hero";
 import { menulists } from "../../utils/data";
+import { ShowOnLogin, ShowOnLogout } from "../../utils/HiddenLink";
+import { useDispatch, useSelector } from "react-redux";
+import { useUserProfile } from "../../hooks/useUserProfile";
+import { getUserProfile, selectIsLoggedIn } from "../../redux/features/authSlice";
 
 export const Header = () => {
+
+  const {isLoggedIn}=useSelector(selectIsLoggedIn)
+
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
@@ -41,7 +48,16 @@ export const Header = () => {
   // Check if it's the home page
   const isHomePage = location.pathname === "/";
 
-  const role = "buyer";
+  const {role}=useUserProfile()
+  const dispatch=useDispatch()
+
+  useEffect(()=>{
+    if(isLoggedIn){
+      dispatch(getUserProfile())
+    }
+  },[dispatch,isLoggedIn])
+
+  // const role = "buyer";
   return (
     <>
       <header className={isHomePage ? `header py-1 bg-primary ${isScrolled ? "scrolled" : ""}` : `header bg-white shadow-s1 ${isScrolled ? "scrolled" : ""}`}>
@@ -68,23 +84,31 @@ export const Header = () => {
             <div className="flex items-center gap-8 icons">
               <div className="hidden lg:flex lg:items-center lg:gap-8">
                 <IoSearchOutline size={23} className={`${isScrolled || !isHomePage ? "text-black" : "text-white"}`} />
-                {role === "buyer" && (
+                {isLoggedIn && role === "buyer" && (
+                  <ShowOnLogin>
                   <CustomNavLink href="/seller/login" className={`${isScrolled || !isHomePage ? "text-black" : "text-white"}`}>
                     Become a Seller
                   </CustomNavLink>
+                  </ShowOnLogin>
                 )}
+                <ShowOnLogout>
                 <CustomNavLink href="/login" className={`${isScrolled || !isHomePage ? "text-black" : "text-white"}`}>
                   Sign in
                 </CustomNavLink>
                 <CustomNavLink href="/register" className={`${!isHomePage || isScrolled ? "bg-green" : "bg-white"} px-8 py-2 rounded-full text-primary shadow-md`}>
                   Join
                 </CustomNavLink>
+                </ShowOnLogout>
+
+                <ShowOnLogin>
                 <CustomNavLink href="/dashboard">
                   <ProfileCard>
                     <img src={User1} alt="" className="w-full h-full object-cover" />
                   </ProfileCard>
                 </CustomNavLink>
+                </ShowOnLogin>
               </div>
+                
               <div className={`icon flex items-center justify-center gap-6 ${isScrolled || !isHomePage ? "text-primary" : "text-white"}`}>
                 <button onClick={toggleMenu} className="lg:hidden w-10 h-10 flex justify-center items-center bg-black text-white focus:outline-none">
                   {isOpen ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}

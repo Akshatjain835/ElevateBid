@@ -11,14 +11,14 @@ import { useEffect } from "react";
 
 function App() {
   const dispatch=useDispatch()
+  const {isLoggedIn, user} = useSelector((state)=>state.auth)
 
-
-  // const {isLoggedIn}=useSelector((state)=>state.auth)
-  // console.log("user is logged in",isLoggedIn)
+  // console.log("App.jsx - Initial state:", { isLoggedIn, user })
+  // console.log("App.jsx - localStorage user:", JSON.parse(localStorage.getItem('user')))
 
   useEffect(()=>{
+    // console.log("App.jsx - Calling getLoginStatus")
     dispatch(getLoginStatus())
-    
   },[dispatch])
 
   return (

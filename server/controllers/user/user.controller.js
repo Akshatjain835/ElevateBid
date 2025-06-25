@@ -1,6 +1,7 @@
 import User from "../../models/user.model.js";
 import { generateToken } from "../../utils/generateToken.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const registerUserController = async (req, res) => {
   const { name, email, password } = req.body;
@@ -98,13 +99,15 @@ export const loginStatusController = async (req, res) => {
     return res.json(false);
   }
 
-  const verified = jwt.verify(token, process.env.JWT_SECRET);
-
-  if (verified) {
-    return res.json(true);
+  try {
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    if (verified) {
+      return res.json(true);
+    }
+    return res.json(false);
+  } catch (error) {
+    return res.json(false);
   }
-
-  return res.json(false);
 };
 
 export const logoutUserController = async (req, res) => {
