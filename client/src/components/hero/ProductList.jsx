@@ -1,19 +1,19 @@
-import { Container, Heading } from "../../routes/common/AllRoutes.jsx";
-import { productlists } from "../../utils/data.js";
-import { ProductCard } from "../../routes/common/AllRoutes.jsx";
+import { Container, Heading } from "../../routes/common/AllRoutes";
+import { productlists } from "../../utils/data";
+import { ProductCard } from "../cards/ProductCard";
 
-export const ProductList = ({products}) => {
+export const ProductList = () => {
   return (
     <>
       <section className="product-home">
         <Container>
           <Heading
-            title="Live Bidding"
+            title="Live Auction"
             subtitle="Explore on the world's best & largest Bidding marketplace with our beautiful Bidding products. We want to be a part of your smile, success and future growth."
           />
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 my-8">
-            {products?.slice(0, 12)?.map((item, index) => (
+            {productlists?.slice(0, 12)?.map((item, index) => (
               <ProductCard item={item} key={index + 1} />
             ))}
           </div>

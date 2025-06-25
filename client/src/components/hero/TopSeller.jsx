@@ -1,5 +1,5 @@
-import { Caption, Container, Heading, ProfileCard, Title } from "../../routes/common/AllRoutes.jsx";
-import { topSellerList } from "../../utils/data.js";
+import { Caption, Container, Heading, ProfileCard, Title } from "../../routes/common/AllRoutes";
+import { topSellerList } from "../../utils/data";
 
 export const TopSeller = () => {
   return (

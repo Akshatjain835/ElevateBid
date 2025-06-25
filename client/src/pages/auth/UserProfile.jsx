@@ -1,61 +1,45 @@
 import React from "react";
-import {Caption,Title} from '../../routes/common/AllRoutes.jsx'
-import { commonClassNameOfInput, PrimaryButton } from '../../routes/common/AllRoutes.jsx'
-import { useDispatch, useSelector } from "react-redux";
-import {useRedirectLoggedOutUser} from "../../hooks/useRedirectLoggedOutUser.js";
-
-import { getUserProfile } from "../../redux/features/authSlice.js";
-import { useEffect } from "react";
+import { Caption, Title } from "../../routes/common/AllRoutes";
+import { User2 } from "../../components/hero/Hero";
+import { commonClassNameOfInput, PrimaryButton } from "../../components/common/Design";
 
 export const UserProfile = () => {
-
-    useRedirectLoggedOutUser('/login')
-
-    const {user}=useSelector((state)=>state.auth)
-    // console.log(user)
-   const dispatch=useDispatch()
-
-   useEffect(()=>{
-    dispatch(getUserProfile())
-   },[dispatch])
-     
   return (
     <>
       <section className="shadow-s1 p-8 rounded-lg">
         <div className="profile flex items-center gap-8">
-          <img src={user?.photo} alt="" className="w-24 h-24 rounded-full object-cover" />
+          <img src={User2} alt="" className="w-24 h-24 rounded-full object-cover" />
           <div>
             <Title level={5} className="capitalize">
-                {/* Akshat JAIN */}
-              {user?.name}
+              Akshat
             </Title>
-            <Caption>{user?.email}</Caption>
+            <Caption>example@gmail.com</Caption>
           </div>
         </div>
         <form>
           <div className="flex items-center gap-5 mt-10">
             <div className="w-full">
               <Caption className="mb-2">Full Name </Caption>
-              <input type="search" className={`capitalize ${commonClassNameOfInput}`} placeholder="Sunil" readOnly />
+              <input type="search" className={`capitalize ${commonClassNameOfInput}`} placeholder="Akshat" readOnly />
             </div>
           </div>
           <div className="flex items-center gap-5 mt-10">
             <div className="w-1/2">
               <Caption className="mb-2">Contact Number</Caption>
-              <input type="search" value={user?.phone} className={commonClassNameOfInput} placeholder="Contact Number" />
+              <input type="search" className={commonClassNameOfInput} placeholder="Contact Number" />
             </div>
             <div className="w-1/2">
               <Caption className="mb-2">Email</Caption>
-              <input type="search" value={user?.email} className={commonClassNameOfInput} placeholder="example@gmail.com" disabled />
+              <input type="search" className={commonClassNameOfInput} placeholder="example@gmail.com" disabled />
             </div>
           </div>
           <div className="my-8">
             <Caption className="mb-2">Role</Caption>
-            <input type="search" value={user?.role} className={commonClassNameOfInput}  required />
+            <input type="search" className={commonClassNameOfInput} placeholder="admin" required />
           </div>
           <div className="my-8">
             <Caption className="mb-2">Profile Picture</Caption>
-            <input type="search" value={user?.photo} className={commonClassNameOfInput} placeholder="Working" required />
+            <input type="search" className={commonClassNameOfInput} placeholder="Working" required />
           </div>
           <PrimaryButton>Update Profile</PrimaryButton>
         </form>

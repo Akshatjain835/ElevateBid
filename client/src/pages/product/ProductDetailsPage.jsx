@@ -1,91 +1,15 @@
-import { Body, Caption, Container, Title } from "../../routes/common/AllRoutes.jsx";
+import { Body, Caption, Container, Title } from "../../routes/common/AllRoutes";
 import { IoIosStar, IoIosStarHalf, IoIosStarOutline } from "react-icons/io";
 import { commonClassNameOfInput } from "../../components/common/Design";
 import { AiOutlinePlus } from "react-icons/ai";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllProduct, getProduct } from "../../redux/features/productSlice.js";
-import { useParams } from "react-router-dom";
-import { DateFormatter } from "../../utils/DateFormatter.jsx";
-import { fetchBiddingHistory, placeBid } from "../../redux/features/biddingSlice.js";
-import { toast } from "react-toastify";
-import { Loader } from "../../components/common/Loader.jsx";
+import { useState } from "react";
 
 export const ProductsDetailsPage = () => {
-  const dispatch=useDispatch()
-  const {id}=useParams()
-  const {product,isLoading}=useSelector((state)=>state.product)
-  const {history}=useSelector((state)=>state.bidding)
-
-  const [rate,setRate]=useState(0)
   const [activeTab, setActiveTab] = useState("description");
-
-
-
-  useEffect(()=>{
-    dispatch(getProduct(id))
-  },[dispatch,id])
-
-  // console.log(product)
-
-  useEffect(()=>{
-    if(product && !product.isSoldout){
-      dispatch(fetchBiddingHistory(id))
-    }
-  },[dispatch,id,product])
-
-  // console.log(history)
-
-  useEffect(()=>{
-     if(history && history.length>0){
-         const highestBid=Math.max(...history.map((bid)=>bid.price))
-         setRate(highestBid)
-     }else if(product){
-      setRate(product.price)
-     }
-  },[history,product])
-
- 
-
-  const incrementBid=async(e)=>{
-    setRate((prevRate)=>prevRate+1)
-  }
-
-  // console.log(product)
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-
-  const save=async(e)=>{
-             e.preventDefault()
-
-             if(product.price>rate){
-               return toast.error("Your Bid amount must be equal to or higher than the Product price")
-             }
-
-             const formData={
-              price:rate,
-              productId:id,
-             }
-
-             try {
-              const response=await dispatch(placeBid(formData)).unwrap()
-              if(response.success){
-                toast.success("Bid placed successfully")
-                
-              }
-              dispatch(fetchBiddingHistory(id))
-             } catch (error) {
-                 return toast.error(error.message || "Something went wrong")
-             }
-
-  }
-
-  if(isLoading){
-    return <Loader/>
-  }
-  
   return (
     <>
       <section className="pt-24 px-8">
@@ -93,12 +17,12 @@ export const ProductsDetailsPage = () => {
           <div className="flex justify-between gap-8">
             <div className="w-1/2">
               <div className="h-[70vh]">
-                <img src={product?.image?.filepath} alt={product?.image?.fileName} className="w-full h-full object-cover rounded-xl" />
+                <img src="https://bidout-wp.b-cdn.net/wp-content/uploads/2022/10/Image-14.jpg" alt="" className="w-full h-full object-cover rounded-xl" />
               </div>
             </div>
             <div className="w-1/2">
               <Title level={2} className="capitalize">
-                {product?.title}
+                Couple Wedding Ring
               </Title>
               <div className="flex gap-5">
                 <div className="flex text-green ">
@@ -111,11 +35,11 @@ export const ProductsDetailsPage = () => {
                 <Caption>(2 customer reviews)</Caption>
               </div>
               <br />
-              <Body>{product?.description.slice(0,150)}</Body>
+              <Body>Korem ipsum dolor amet, consectetur adipiscing elit. Maece nas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</Body>
               <br />
               <Caption>Item condition: New</Caption>
               <br />
-              <Caption>Item Verifed: {product?.isVerify ? "Yes" : "No"}</Caption>
+              <Caption>Item Verifed: Yes</Caption>
               <br />
               <Caption>Time left:</Caption>
               <br />
@@ -140,24 +64,24 @@ export const ProductsDetailsPage = () => {
               <br />
               <Title className="flex items-center gap-2">
                 Auction ends:
-                <Caption><DateFormatter date={product?.endDate} /></Caption>
+                <Caption>December 31, 2024 12:00 am</Caption>
               </Title>
               <Title className="flex items-center gap-2 my-5">
                 Timezone: <Caption>UTC 0</Caption>
               </Title>
               <Title className="flex items-center gap-2 my-5">
-                Price:<Caption>${product?.price} </Caption>
+                Price:<Caption>$200 </Caption>
               </Title>
               <Title className="flex items-center gap-2">
-                Current bid:<Caption className="text-3xl">${rate} </Caption>
+                Current bid:<Caption className="text-3xl">$500 </Caption>
               </Title>
               <div className="p-5 px-10 shadow-s3 py-8">
-                <form onSubmit={save} className="flex gap-3 justify-between">
-                  <input value={rate} onChange={(e)=>setRate(e.target.value)} min={product?.price} className={commonClassNameOfInput} type="number" name="price" />
-                  <button type="button" onClick={incrementBid} className="bg-gray-100 rounded-md px-5 py-3">
+                <form className="flex gap-3 justify-between">
+                  <input className={commonClassNameOfInput} type="number" name="price" />
+                  <button type="button" className="bg-gray-100 rounded-md px-5 py-3">
                     <AiOutlinePlus />
                   </button>
-                  <button type="submit" className={`py-3 px-8 rounded-lg ${product?.isSoldout || !product?.isVerify ?   "bg-gray-400  text-gray-700 cursor-not-allowed" : "bg-green text-white cursor-pointer"  } ` } disabled={rate<=product?.price || rate<=product?.currentBid || product?.isSoldout || !product?.isVerify}>
+                  <button type="submit" className={`py-3 px-8 rounded-lg ${"bg-gray-400 text-gray-700 cursor-not-allowed"}`}>
                     Submit
                   </button>
                 </form>
@@ -186,67 +110,73 @@ export const ProductsDetailsPage = () => {
                   <Title level={4}>Description</Title>
                   <br />
                   <Caption className="leading-7">
-                   {product?.description}
+                    If you've been following the crypto space, you've likely heard of Non-Fungible Tokens (Biddings), more popularly referred to as 'Crypto Collectibles.' The world of Biddings is
+                    growing rapidly. It seems there is no slowing down of these assets as they continue to go up in price. This growth comes with the opportunity for people to start new businesses to
+                    create and capture value. The market is open for players in every kind of field. Are you a collector.
                   </Caption>
-                 
+                  <Caption className="leading-7">
+                    If you've been following the crypto space, you've likely heard of Non-Fungible Tokens (Biddings), more popularly referred to as 'Crypto Collectibles.' The world of Biddings is
+                    growing rapidly. It seems there is no slowing down of these assets as they continue to go up in price. This growth comes with the opportunity for people to start new businesses to
+                    create and capture value. The market is open for players in every kind of field. Are you a collector.
+                  </Caption>
                   <br />
                   <Title level={4}>Product Overview</Title>
                   <div className="flex justify-between gap-5">
                     <div className="mt-4 capitalize w-1/2">
                       <div className="flex justify-between border-b py-3">
                         <Title>category</Title>
-                        <Caption>{product?.category}</Caption>
+                        <Caption>Category</Caption>
                       </div>
                       <div className="flex justify-between border-b py-3">
                         <Title>height</Title>
-                        <Caption> {product?.height} (cm)</Caption>
+                        <Caption> 200 (cm)</Caption>
                       </div>
                       <div className="flex justify-between border-b py-3">
                         <Title>length</Title>
-                        <Caption> {product?.lengthpic} (cm)</Caption>  
+                        <Caption> 300 (cm)</Caption>
                       </div>
                       <div className="flex justify-between border-b py-3">
                         <Title>width</Title>
-                        <Caption> {product?.width} (cm)</Caption>
+                        <Caption> 400 (cm)</Caption>
                       </div>
                       <div className="flex justify-between border-b py-3">
-                        <Title>weight</Title>
-                        <Caption> {product?.weigth} (kg)</Caption>
+                        <Title>weigth</Title>
+                        <Caption> 50 (kg)</Caption>
                       </div>
                       <div className="flex justify-between py-3 border-b">
                         <Title>medium used</Title>
-                        <Caption> {product?.mediumused} </Caption>
+                        <Caption> Gold </Caption>
                       </div>
                       <div className="flex justify-between py-3 border-b">
                         <Title>Price</Title>
-                        <Caption> ${product?.price} </Caption>
+                        <Caption> $50000 </Caption>
                       </div>
                       <div className="flex justify-between py-3 border-b">
                         <Title>Sold out</Title>
-                        {product?.isSoldout ? <Caption>Sold Out</Caption> : <Caption>In Stock</Caption>}
+                        Yes
                       </div>
                       <div className="flex justify-between py-3 border-b">
                         <Title>verify</Title>
-                        {product?.isVerify ? <Caption>Yes</Caption> : <Caption>No</Caption>}
+                        No
                       </div>
                       <div className="flex justify-between py-3 border-b">
                         <Title>Create At</Title>
-                        <Caption><DateFormatter date={product?.createdAt} /></Caption>
+                        <Caption>December 31, 2024 12:00 am</Caption>
                       </div>
                       <div className="flex justify-between py-3">
                         <Title>Update At</Title>
-                        <Caption><DateFormatter date={product?.updatedAt} /></Caption>
+                        <Caption>December 31, 2024 12:00 am</Caption>
                       </div>
                     </div>
                     <div className="w-1/2">
                       <div className="h-[60vh] p-2 bg-green rounded-xl">
-                        <img src={product?.image?.filepath} alt={product?.image?.fileName} className="w-full h-full object-cover rounded-xl" />
+                        <img src="https://bidout-wp.b-cdn.net/wp-content/uploads/2022/10/Image-14.jpg" alt="" className="w-full h-full object-cover rounded-xl" />
                       </div>
                     </div>
                   </div>
                 </div>
               )}
-              {activeTab === "auctionHistory" && <AuctionHistory history={history} />}
+              {activeTab === "auctionHistory" && <AuctionHistory />}
               {activeTab === "reviews" && (
                 <div className="reviews-tab shadow-s3 p-8 rounded-md">
                   <Title level={5} className=" font-normal">
@@ -270,9 +200,7 @@ export const ProductsDetailsPage = () => {
     </>
   );
 };
-
-
-export const AuctionHistory = ({history}) => {
+export const AuctionHistory = () => {
   return (
     <>
       <div className="shadow-s1 p-8 rounded-lg">
@@ -280,9 +208,7 @@ export const AuctionHistory = ({history}) => {
           Auction History
         </Title>
         <hr className="my-5" />
-{history.length===0? (
-    <h2 className="m-2">No bidding Record found</h2>
-):(
+
         <div className="relative overflow-x-auto rounded-lg">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500">
             <thead className="text-xs text-gray-700 uppercase bg-gray-100">
@@ -302,20 +228,15 @@ export const AuctionHistory = ({history}) => {
               </tr>
             </thead>
             <tbody>
-
-              {history.map((item,index)=>(
-              <tr className="bg-white border-b hover:bg-gray-50" key={index}>
-                <td className="px-6 py-4"><DateFormatter date={item?.createdAt} /></td>
-                <td className="px-6 py-4">${item?.price}</td>
-                <td className="px-6 py-4">{item?.user?.name}</td>
-                <td className="px-6 py-4">{item?.isAutoBid ? "Yes" : "No"}</td>
+              <tr className="bg-white border-b hover:bg-gray-50">
+                <td className="px-6 py-4">December 31, 2024 12:00 am</td>
+                <td className="px-6 py-4">$200</td>
+                <td className="px-6 py-4">Akshat</td>
+                <td className="px-6 py-4"> </td>
               </tr>
-              ))}
-
             </tbody>
           </table>
         </div>
-        )}
       </div>
     </>
   );

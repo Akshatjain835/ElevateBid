@@ -1,5 +1,5 @@
-import { categorylists } from "../../utils/data.js";
-import { CategoryCard, Container, Heading } from "../../routes/common/AllRoutes.jsx";
+import { categorylists } from "../../utils/data";
+import { CategoryCard, Container, Heading } from "../../routes/common/AllRoutes";
 
 export const CategorySlider = () => {
   return (

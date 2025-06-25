@@ -12,7 +12,7 @@ import { deleteCategory, getAllCategory } from "../../redux/features/categorySli
 import { toast } from "react-toastify";
 import { DateFormatter } from "../../utils/DateFormatter.jsx";
 
-export const Catgeorylist = () => {
+export const CategoryList = () => {
 
     useRedirectLoggedOutUser('/login')
     const dispatch=useDispatch()

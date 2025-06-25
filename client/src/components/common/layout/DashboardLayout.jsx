@@ -1,26 +1,8 @@
-import { useUserProfile } from "../../../hooks/userProfile";
 import { Sidebar } from "../../admin/Sidebar";
 import { Container } from "../Design";
-import { useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { getUserProfile } from "../../../redux/features/authSlice";
-import { useEffect } from "react";
 
 export const DashboardLayout = ({ children }) => {
-
-    const location=useLocation()
-   const dispatch=useDispatch()
-   
-   const {role,isLoggedIn}=useUserProfile()
-   
-    useEffect(()=>{
-        if(isLoggedIn){
-            dispatch(getUserProfile())
-        }
-    },[dispatch,isLoggedIn,location])
-
-
-//   const role = "admin";
+  const role = "admin";
 
   return (
     <>

@@ -1,5 +1,5 @@
-import { topList } from "../../utils/data.js";
-import { Caption, Container, Heading } from "../../routes/common/AllRoutes.jsx";
+import { topList } from "../../utils/data";
+import { Caption, Container, Heading } from "../../routes/common/AllRoutes";
 
 export const TopCollection = () => {
   return (

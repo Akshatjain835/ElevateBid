@@ -1,4 +1,4 @@
-import { Container, PrimaryButton, ProfileCard, Title } from "../../routes/common/AllRoutes.jsx";
+import { Container, PrimaryButton, ProfileCard, Title } from "./Design";
 import { FiPhoneOutgoing } from "react-icons/fi";
 import { MdOutlineAttachEmail } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
@@ -6,13 +6,10 @@ import { FaInstagram } from "react-icons/fa";
 import { CiLinkedin, CiTwitter } from "react-icons/ci";
 import { AiOutlineYoutube } from "react-icons/ai";
 import { useLocation } from "react-router-dom";
-import { Loader } from "./Loader.jsx";
 
 export const Footer = () => {
-
   const location = useLocation();
   const isHomePage = location.pathname === "/";
-
   return (
     <>
       <footer className=" relative bg-primary py-16 mt-16">
@@ -52,7 +49,7 @@ export const Footer = () => {
                 About Us
               </Title>
               <ul className="flex flex-col gap-5 mt-8 text-gray-200">
-                <p>About ElevateBid</p>
+                <p>About Sbidu</p>
                 <p>Help</p>
                 <p>Affiliates</p>
                 <p>Jobs</p>

@@ -1,79 +1,10 @@
 import { FaFacebook, FaGoogle } from "react-icons/fa";
-import { Caption, Container, CustomNavLink, PrimaryButton, Title } from '../../routes/common/AllRoutes.jsx'
-import { commonClassNameOfInput } from '../../routes/common/AllRoutes.jsx'
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { register } from "../../redux/features/authSlice";
-import { toast } from "react-toastify";
-import { useState } from "react";
-
-const initialState={
-  name:'',
-  email:'',
-  password:'',
-  confirmPassword:''
-}
+import { Caption, Container, CustomNavLink, PrimaryButton, Title } from "../../routes/common/AllRoutes";
+import { commonClassNameOfInput } from "../../components/common/Design";
 
 export const Register = () => {
-    const dispatch=useDispatch()
-    const navigate=useNavigate()
-    
-    const [formData,setFormData]=useState(initialState)
-    const {name,email,password,confirmPassword}=formData
-
-     const {isLoading,isError,isSuccess,message}=useSelector((state)=>state.auth)
-    
-     const handleInputChange=(e)=>{
-       const {name,value}=e.target
-       setFormData({...formData,[name]:value})
-     }
-
-     const handleRegister=(e)=>{
-
-        e.preventDefault()
-
-        if(!name || !email || !password || !confirmPassword){
-            return toast.error('Please fill all fields')
-            
-        }
-        
-        if(password.length<0){
-            return toast.error('Password must be at least 6 characters long')
-        }
-
-        if(password!==confirmPassword){
-            return toast.error('Passwords do not match')
-        }
-
-        const userData={
-            name,
-            email,
-            password
-        }
-
-        dispatch(register(userData))
-        
-     }
-
-     useEffect(()=>{
-        if(isSuccess && isLoggedIn){
-            toast.success(message)
-            navigate('/login')
-        }
-
-        if(isError){
-            toast.error(message || "Something went wrong")
-        }
-
-        return () => {  
-            dispatch(RESET())
-        }
-
-     },[isSuccess,message,navigate,isError,isLoggedIn,dispatch])
-
   return (
     <>
-    {isLoading && <Loader/>}
       <section className="regsiter pt-16 relative">
         <div className="bg-green w-96 h-96 rounded-full opacity-20 blur-3xl absolute top-2/3"></div>
         <div className="bg-[#241C37] pt-8 h-[40vh] relative content">
@@ -96,7 +27,7 @@ export const Register = () => {
             </div>
           </Container>
         </div>
-        <form onSubmit={ handleRegister} className="bg-white shadow-s3 w-1/3 m-auto my-16 p-8 rounded-xl">
+        <form className="bg-white shadow-s3 w-1/3 m-auto my-16 p-8 rounded-xl">
           <div className="text-center">
             <Title level={5}>Sign Up</Title>
             <p className="mt-2 text-lg">
@@ -105,19 +36,19 @@ export const Register = () => {
           </div>
           <div className="py-5">
             <Caption className="mb-2">Username *</Caption>
-            <input type="text" name="name" value={name} onChange={handleInputChange} className={commonClassNameOfInput} placeholder="First Name" required />
+            <input type="text" name="name" className={commonClassNameOfInput} placeholder="First Name" required />
           </div>
           <div className="py-5">
             <Caption className="mb-2">Enter Your Email *</Caption>
-            <input type="email" name="email" value={email} onChange={handleInputChange} className={commonClassNameOfInput} placeholder="Enter Your Email" required />
+            <input type="email" name="email" className={commonClassNameOfInput} placeholder="Enter Your Email" required />
           </div>
           <div>
             <Caption className="mb-2">Password *</Caption>
-            <input type="password" name="password" value={password} onChange={handleInputChange} className={commonClassNameOfInput} placeholder="Enter Your Password" required />
+            <input type="password" name="password" className={commonClassNameOfInput} placeholder="Enter Your Password" required />
           </div>
           <div>
             <Caption className="mb-2">Confirm Password *</Caption>
-            <input type="password" name="confirmPassword" value={confirmPassword} onChange={handleInputChange} className={commonClassNameOfInput} placeholder="Confirm password" />
+            <input type="password" name="confirmPassword" className={commonClassNameOfInput} placeholder="Confirm password" />
           </div>
           <div className="flex items-center gap-2 py-4">
             <input type="checkbox" />

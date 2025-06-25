@@ -1,31 +1,18 @@
-import React, { useEffect } from 'react'
-import { CategorySlider, Hero, Process, ProductList, TopCollection, TopSeller, Trust } from '../../routes/common/AllRoutes.jsx'
-import { useRedirectLoggedOutUser } from '../../hooks/useRedirectLoggedOutUser.js'
-import { useDispatch, useSelector } from 'react-redux'
-import { getAllProduct, getAllProductOfUser } from '../../redux/features/productSlice.js'
-
+import { CategorySlider, Hero, Process, TopCollection, TopSeller, Trust } from "../../routes/common/AllRoutes";
+import { ProductList } from "../../components/hero/ProductList";
 
 const Home = () => {
-  useRedirectLoggedOutUser('/login')
-
-  const dispatch=useDispatch()
-  const {products}=useSelector((state)=>state.product)
-
-  useEffect(()=>{
-    dispatch(getAllProduct())
-  },[dispatch])
-
   return (
     <>
-    <Hero/>
-    <CategorySlider/>
-    <ProductList products={products}/>
-    <TopSeller/>
-    <Process/>
-    <Trust/>
-    <TopCollection/>
+      <Hero />
+      <CategorySlider />
+      <ProductList />
+      <TopSeller />
+      <Process />
+      <Trust />
+      <TopCollection />
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

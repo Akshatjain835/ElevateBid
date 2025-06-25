@@ -1,11 +1,10 @@
- import React, { useEffect, useState } from "react";
+/* import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCategory } from "../redux/fetaures/categorySlice";
 import { Loader } from "./common/Loader";
 import { getAllProduct } from "../redux/fetaures/productSlice";
 
 export const Search = () => {
-    
   const dispatch = useDispatch();
   const [selectedCategory, setSelectedCategory] = useState("");
 
@@ -79,4 +78,4 @@ export const Search = () => {
     </>
   );
 };
- 
+ */
