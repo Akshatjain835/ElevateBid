@@ -39,6 +39,7 @@ export const logout=createAsyncThunk('auth/logout',async(thunkAPI)=>{
     try{
         const response= await authService.logout()
         localStorage.removeItem('user')
+       
     }catch(error){
         const message=error.response.data.message || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
@@ -49,13 +50,14 @@ export const logout=createAsyncThunk('auth/logout',async(thunkAPI)=>{
 export const getLoginStatus=createAsyncThunk('auth/status',async(thunkAPI)=>{
     try{
         const response= await authService.getLoginStatus()
-        return await authService.getLoginStatus()
+        return response.data
     }catch(error){
         const message=error.response.data.message || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
         toast.error(message)
     }
 })
+
 
 export const getUserProfile=createAsyncThunk('auth/profile',async(thunkAPI)=>{
     try{
@@ -159,6 +161,7 @@ const authSlice = createSlice({
             state.isLoading=false
             state.isError=true
             state.user=null
+            state.isLoggedIn=false
             state.message=action.payload
             toast.error(action.payload)
         })
@@ -178,36 +181,34 @@ const authSlice = createSlice({
         .addCase(logout.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
-         
+            state.isLoggedIn=false
             state.message=action.payload
             toast.error(action.payload)
         })  
 
         .addCase(getLoginStatus.pending,(state)=>{
             state.isLoading=true
-            state.isLoggedIn=false
-            state.isSuccess=false
-            state.isError=false
-            state.message=''
+          
 
 
         })
         .addCase(getLoginStatus.fulfilled,(state,action)=>{
             state.isLoading=false
             state.isSuccess=true
-            state.isLoggedIn=true
-            state.user=action.payload
+            state.isLoggedIn=action.payload
+            
             toast.success(action.payload)
         })  
         .addCase(getLoginStatus.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
-            state.user=null
+            state.isLoggedIn=false
             state.message=action.payload
             toast.error(action.payload)
         })  
+
         .addCase(getUserProfile.pending,(state)=>{
-            state.isLoading=true
+            state.isLoading=false
             state.isLoggedIn=false
             state.isSuccess=false
             state.isError=false

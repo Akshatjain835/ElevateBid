@@ -16,13 +16,13 @@ const login=async(userData)=>{
 
 const logout=async()=>{
     const response=await axios.get(summaryApi.logout.url)
-    localStorage.removeItem('user')
+    
     return response.data.message
 }
 
 const getLoginStatus=async()=>{
     const response=await axios.get(summaryApi.getLoginStatus.url)
-    return response.data.message
+    return response.data
 }
 
 const getUserProfile=async()=>{

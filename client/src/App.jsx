@@ -12,13 +12,12 @@ import { useEffect } from "react";
 function App() {
   const dispatch=useDispatch()
 
-  // const {isLoggedIn}=useSelector((state)=>state.auth.isLoggedIn)
-  // // console.log(isLoggedIn)
+
+  // const {isLoggedIn}=useSelector((state)=>state.auth)
+  // console.log("user is logged in",isLoggedIn)
+
   useEffect(()=>{
     dispatch(getLoginStatus())
-
-
-    
     
   },[dispatch])
 
