@@ -100,7 +100,7 @@ const privateRoutes = [
   {
     path: '/category/create',
     element: (
-      
+
       <PrivateRoute>
         <Layout>
           <DashboardLayout>

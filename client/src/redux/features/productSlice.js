@@ -43,7 +43,7 @@ export const getAllProduct=createAsyncThunk('product/public/get-products',async(
     }
 })
 
-export const getAllWonedProductOfUser=createAsyncThunk('product/public/get-woned-user-products',async(_,thunkAPI)=>{
+export const getAllWonedProductOfUser=createAsyncThunk('product/get-woned-user-products',async(_,thunkAPI)=>{
     try{
         const response=await productService.getAllWonedProductOfUser()
         return response
@@ -75,7 +75,7 @@ export const updateProduct=createAsyncThunk('product/user/update',async({id,form
 
 export const getProduct=createAsyncThunk('product/public/get-product',async(id,thunkAPI)=>{
     try{
-        const response=await productService.getProduct(id,formData)
+        const response=await productService.getProduct(id)
         return response
     }catch(error){
         const message=error.response.data.message || error.message || error.toString()
@@ -103,8 +103,7 @@ const productSlice=createSlice({
         builder
         .addCase(createProduct.pending,(state)=>{
             state.isLoading=true
-            state.isError=false
-            state.isSuccess=false
+            
         })
         .addCase(createProduct.fulfilled,(state,action)=>{
             state.isLoading=false
@@ -112,7 +111,7 @@ const productSlice=createSlice({
             state.isError=false
             state.products.push(action.payload)
             toast.success('Product created successfully')
-            toast.success(action.payload)
+        
         })
         .addCase(createProduct.rejected,(state,action)=>{
             state.isLoading=false
@@ -123,8 +122,7 @@ const productSlice=createSlice({
 
         .addCase(getAllProductOfUser.pending,(state)=>{
             state.isLoading=true
-            state.isError=false
-            state.isSuccess=false
+            
         })
         .addCase(getAllProductOfUser.fulfilled,(state,action)=>{
             state.isLoading=false   
@@ -136,13 +134,12 @@ const productSlice=createSlice({
             state.isLoading=false
             state.isError=true
             state.message=action.payload
-            toast.error(action.payload)
+            
         })
 
         .addCase(getAllProduct.pending,(state)=>{
             state.isLoading=true
-            state.isError=false
-            state.isSuccess=false
+           
         })
         .addCase(getAllProduct.fulfilled,(state,action)=>{
             state.isLoading=false
@@ -154,13 +151,12 @@ const productSlice=createSlice({
             state.isLoading=false
             state.isError=true
             state.message=action.payload
-            toast.error(action.payload)
+            
         })
 
         .addCase(getAllWonedProductOfUser.pending,(state)=>{
             state.isLoading=true
-            state.isError=false
-            state.isSuccess=false
+            
         })
         .addCase(getAllWonedProductOfUser.fulfilled,(state,action)=>{
             state.isLoading=false
@@ -172,13 +168,12 @@ const productSlice=createSlice({
             state.isLoading=false
             state.isError=true  
             state.message=action.payload
-            toast.error(action.payload)
+           
         })
 
         .addCase(deleteProduct.pending,(state)=>{
             state.isLoading=true
-            state.isError=false
-            state.isSuccess=false
+            
         })
         .addCase(deleteProduct.fulfilled,(state,action)=>{
             state.isLoading=false
@@ -191,32 +186,29 @@ const productSlice=createSlice({
             state.isLoading=false
             state.isError=true
             state.message=action.payload
-            toast.error(action.payload)
+            toast.success(action.payload)
         })
 
         .addCase(updateProduct.pending,(state)=>{
             state.isLoading=true
-            state.isError=false
-            state.isSuccess=false
+           
         })
         .addCase(updateProduct.fulfilled,(state,action)=>{
             state.isLoading=false
             state.isSuccess=true
             state.isError=false
-         
             toast.success('Product updated successfully')
         })
         .addCase(updateProduct.rejected,(state,action)=>{
             state.isLoading=false   
             state.isError=true
             state.message=action.payload
-            toast.error(action.payload)
+            toast.success(action.payload)
         })
 
         .addCase(getProduct.pending,(state)=>{
             state.isLoading=true
-            state.isError=false
-            state.isSuccess=false
+           
         })
         .addCase(getProduct.fulfilled,(state,action)=>{
             state.isLoading=false
@@ -228,7 +220,7 @@ const productSlice=createSlice({
             state.isLoading=false
             state.isError=true
             state.message=action.payload
-            toast.error(action.payload)
+           
         })
 
         .addCase(updateProductByAdmin.pending,(state)=>{
@@ -252,8 +244,9 @@ const productSlice=createSlice({
     }
 })
 
-export const {}=productSlice.actions
 
-export const selectProduct=(state)=>state.product.products
+
+export const selectProduct=(state)=>state.product.product
+// export const selectProduct=(state)=>state.product.products
 
 export default productSlice.reducer

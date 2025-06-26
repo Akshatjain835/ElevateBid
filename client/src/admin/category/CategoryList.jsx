@@ -14,7 +14,7 @@ import { DateFormatter } from "../../utils/DateFormatter.jsx";
 
 export const CategoryList = () => {
 
-    useRedirectLoggedOutUser('/login')
+    // useRedirectLoggedOutUser('/login')
     const dispatch=useDispatch()
     const {categorys}=useSelector((state)=>state.category)
 
@@ -30,7 +30,7 @@ export const CategoryList = () => {
             await dispatch(getAllCategory())
         } catch (error) {
             toast.error('Failed to delete category')
-            toast.error(error.message)
+            // toast.error(error.message)
         }
     }
 
@@ -72,7 +72,7 @@ export const CategoryList = () => {
               </tr>
             </thead>
             <tbody>
-                {categorys.map((category,index)=>(
+                {Array.isArray(categorys) && categorys.map((category,index)=>(
               <tr className="bg-white border-b hover:bg-gray-50" key={index}>
                 <td className="px-6 py-4">{index+1}</td>
                 <td className="px-6 py-4">

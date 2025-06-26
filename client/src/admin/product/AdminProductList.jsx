@@ -7,9 +7,7 @@ import { getAllProduct } from "../../redux/features/productSlice";
 import { Loader } from "../../components/common/Loader";
 
 export const AdminProductList = () => {
-    useRedirectLoggedOutUser('/login'
-
-    )
+    // useRedirectLoggedOutUser('/')
     const dispatch=useDispatch()
     const {products,isLoading,}=useSelector((state)=>state.product)
 

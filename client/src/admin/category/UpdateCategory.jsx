@@ -8,7 +8,7 @@ import { createCategory, getAllCategory } from "../../redux/features/categorySli
 
 export const UpdateCategory = () => {
        
-    useRedirectLoggedOutUser('/login')
+    // useRedirectLoggedOutUser('/login')
     const dispatch=useDispatch()
     const navigate=useNavigate()
     const [title,setTitle]=useState('')
@@ -20,12 +20,12 @@ export const UpdateCategory = () => {
      const handleSubmit=async(e)=>{
         e.preventDefault()
         
-         const formData=async(e)=>{
+         const formData={
             title:title
          }
 
          await dispatch(createCategory({formData,id}))
-         await dispatch(getAllCategory()).unwrap()
+         await dispatch(getAllCategory())
           
          if(isSuccess){
             navigate('/category')

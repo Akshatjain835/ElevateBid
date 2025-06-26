@@ -60,28 +60,37 @@ export const summaryApi={
     },
 
     //product
-    createProduct:{
-        url:`${BACKEND_URL}/api/product/`,
-        method:'post'
-    },
+  
     getAllProduct:{
-        url:`${BACKEND_URL}/api/product/`,
+        url:`${BACKEND_URL}/api/product/users`,
         method:'get'
     },
     getAllProductOfUser:{
-        url:`${BACKEND_URL}/api/product/users/`,
+        url:`${BACKEND_URL}/api/product/users`,
         method:'get'
     },
     getAllWonedProductOfUser:{
         url:`${BACKEND_URL}/api/product/users`,
         method:'get'
     },
-
+    getProduct:{
+          url:`${BACKEND_URL}/api/product/users`,
+        method:'get'
+    },
+    
     //product seller
+    createProduct:{
+        url:`${BACKEND_URL}/api/product/seller`,
+        method:'post'
+    },
     deleteProduct:{
         url:`${BACKEND_URL}/api/product/seller`,
         method:'delete'
     },
+    updateProduct:{
+        url:`${BACKEND_URL}/api/product/seller`,
+         method:'put'
+     },
 
     //admin
    
@@ -90,7 +99,11 @@ export const summaryApi={
         method:'put'
     },
     deleteProductByAdmin:{
-        url:`${BACKEND_URL}/api/admin/product/`,
+        url:`${BACKEND_URL}/api/admin/product`,
+        method:'delete'
+    },
+    getProductByAdmin:{
+         url:`${BACKEND_URL}/api/admin/product`,
         method:'delete'
     },
 

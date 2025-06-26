@@ -32,7 +32,7 @@ const handleInputChange = (e) => {
     });
 }
 
-const handleLogin = async e => {
+const handleLogin = async (e) => {
   e.preventDefault();
   
   if(!email || !password){

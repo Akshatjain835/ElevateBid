@@ -42,7 +42,7 @@ export const deleteCategory=createAsyncThunk('category/delete',async(id,thunkAPI
     }
 })
 
-export const updateCategory=createAsyncThunk('category/update',async(id,formData,thunkAPI)=>{
+export const updateCategory=createAsyncThunk('category/update',async({id,formData},thunkAPI)=>{
     try{
         const response=await categoryService.updateCategory(id,formData)
         return response
@@ -62,15 +62,15 @@ const categorySlice=createSlice({
         builder
         .addCase(createCategory.pending,(state)=>{
             state.isLoading=true
-            state.isError=false
-            state.isSuccess=false
+           
         })
         .addCase(createCategory.fulfilled,(state,action)=>{
             state.isLoading=false
             state.isSuccess=true
+            state.isError=false
             // state.categorys.push(action.payload)
             toast.success('Category created successfully')
-            toast.success(action.payload)
+            
         })
         .addCase(createCategory.rejected,(state,action)=>{  
             state.isLoading=false
@@ -81,34 +81,32 @@ const categorySlice=createSlice({
 
         .addCase(getAllCategory.pending,(state)=>{
             state.isLoading=true
-            state.isError=false
-            state.isSuccess=false
+            
         })
         .addCase(getAllCategory.fulfilled,(state,action)=>{
             state.isLoading=false
             state.isSuccess=true
             state.isError=false
             state.categorys=action.payload
-            toast.success(action.payload)
+            
         })
         .addCase(getAllCategory.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
             state.message=action.payload
-            toast.error(action.payload)
+            
         })  
 
         .addCase(deleteCategory.pending,(state)=>{
             state.isLoading=true
-            state.isError=false
-            state.isSuccess=false
+            
         })
         .addCase(deleteCategory.fulfilled,(state,action)=>{
             state.isLoading=false   
             state.isSuccess=true
             state.isError=false
-           
-            toast.success('Category deleted successfully')
+             
+             toast.success("category has been deleted successfully")
         })
         .addCase(deleteCategory.rejected,(state,action)=>{
             state.isLoading=false   
@@ -119,15 +117,14 @@ const categorySlice=createSlice({
 
         .addCase(updateCategory.pending,(state)=>{
             state.isLoading=true
-            state.isError=false
-            state.isSuccess=false
+           
         })
         .addCase(updateCategory.fulfilled,(state,action)=>{
             state.isLoading=false
             state.isSuccess=true
             state.isError=false
             toast.success('Category updated successfully')
-            toast.success(action.payload)
+            
         })
         .addCase(updateCategory.rejected,(state,action)=>{
             state.isLoading=false

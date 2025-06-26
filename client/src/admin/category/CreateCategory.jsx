@@ -3,20 +3,22 @@ import { useRedirectLoggedOutUser } from "../../hooks/useRedirectLoggedOutUser.j
 import { Caption, PrimaryButton, Title ,commonClassNameOfInput} from "../../routes/common/AllRoutes.jsx";
 import { useNavigate } from "react-router-dom";
 import { createCategory, getAllCategory } from "../../redux/features/categorySlice.js";
+import { useState } from "react";
 
 
 export const CreateCategory = () => {
       
-    useRedirectLoggedOutUser('/login')
+    // useRedirectLoggedOutUser('/login')
     const dispatch=useDispatch()
     const navigate=useNavigate()
-    const [title,setTitle]=useState('')
-    const [error,setError]=useState('')
+    const [title,setTitle]=useState("")
+    const [error,setError]=useState("")
 
     const handleInputChange=(e)=>{
         setTitle(e.target.value)
         setError('')
     }
+
     const handleSubmit=async(e)=>{
         e.preventDefault()
         if(title.trim()===''){
@@ -28,7 +30,7 @@ export const CreateCategory = () => {
             setError('')
             await dispatch(createCategory({title}).unwrap())
             await dispatch(getAllCategory()).unwrap()
-            navigate('/api/category')
+            navigate('/category')
         } catch (error) {
             setError("Failed to create category. Please try again.")
             // toast.error(error.message)

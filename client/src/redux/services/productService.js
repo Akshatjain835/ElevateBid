@@ -39,14 +39,20 @@ const updateProduct=async(id,formData)=>{
 //admin
 
 const updateProductByAdmin=async(id,formData)=>{
-    const response=await axios.put(`${summaryApi.updateProductByAdmin.url}/admin/product-verified/${id}`,formData)
+    const response=await axios.patch(`${summaryApi.updateProductByAdmin.url}/admin/product-verified/${id}`,formData)
     return response.data
 }
 
-const deleteProductByAdmin=async(id)=>{ 
-  const response=await axios.delete(`${summaryApi.deleteProductByAdmin.url}/admin/products/${id}`)
+const deleteProductByAdmin=async()=>{ 
+  const response=await axios.delete(`${summaryApi.deleteProductByAdmin.url}/admin/products`)
   return response.data
 }
+
+const getProductByAdmin=async()=>{ 
+    const response=await axios.get(`${summaryApi.getProductByAdmin.url}/admin/products`)
+    return response.data
+  }
+
 
 const productService={
   createProduct,
@@ -56,7 +62,9 @@ const productService={
   deleteProduct,
   getProduct,
   updateProduct,
-  updateProductByAdmin
+  updateProductByAdmin,
+  deleteProductByAdmin,
+  getProductByAdmin
 
 }
 
