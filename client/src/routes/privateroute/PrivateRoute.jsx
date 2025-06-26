@@ -194,6 +194,18 @@ const privateRoutes = [
       </PrivateRoute>
     ),
   },
+  {
+    path:"/winning-products",
+    element:(
+      <PrivateRoute>
+        <Layout>
+          <DashboardLayout>
+            <WinningBidList />
+          </DashboardLayout>
+        </Layout>
+      </PrivateRoute>
+    )
+  }
 ];
 
 export default privateRoutes;

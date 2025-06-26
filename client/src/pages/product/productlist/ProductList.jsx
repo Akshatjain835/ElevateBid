@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllProductOfUser } from "../../../redux/features/productSlice";
 import { Table } from "../../../components/Table";
 import { Loader } from "../../../components/common/Loader";
+import { sellproductsbyuser } from "../../../redux/features/biddingSlice";
 
 export const ProductList = () => {
   // useRedirectLoggedOutUser("/")
@@ -23,6 +24,11 @@ export const ProductList = () => {
          await dispatch(deleteProduct(id))
          await dispatch(getAllProductOfUser())
   }
+
+  const handleSellProduct=async(productId)=>{
+    await dispatch(sellproductsbyuser({productId:productId}))
+    await dispatch(getAllProductOfUser())
+}
 
   if(isLoading){
     return <Loader/>
@@ -50,7 +56,7 @@ if(products?.length===0){
           </NavLink>
         </div>
         <hr className="my-5" />
-        <Table products={userproducts} handleDeleteProduct={handleDeleteProduct} isAdmin={true}/>
+        <Table products={userproducts} handleDeleteProduct={handleDeleteProduct} isAdmin={true} handleSellProduct={handleSellProduct}/>
       </section>
     </>
   );

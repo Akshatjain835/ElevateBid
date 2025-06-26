@@ -6,7 +6,7 @@ import { getAllProduct, updateProductByAdmin } from "../../redux/features/produc
 import { useState } from "react";
 
 export const UpdateProductByAdmin = () => {
-    useRedirectLoggedOutUser('/login')
+    // useRedirectLoggedOutUser('/login')
     const {id}=useParams();
     const dispatch=useDispatch();
     const navigate=useNavigate();

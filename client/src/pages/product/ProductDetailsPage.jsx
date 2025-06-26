@@ -7,22 +7,82 @@ import { useDispatch, useSelector } from "react-redux";
 import {  getProduct } from "../../redux/features/productSlice";
 import { useParams } from "react-router-dom";
 import { DateFormatter } from "../../utils/DateFormatter";
+import { fetchBiddingHistory, placeBid } from "../../redux/features/biddingSlice";
+import { toast } from "react-toastify";
+import { Loader } from "../../components/common/Loader";
 
 export const ProductsDetailsPage = () => {
 
   const dispatch=useDispatch()
   const {id}=useParams()
   const {product,isLoading}=useSelector((state)=>state.product)
+  const {history}=useSelector((state)=>state.bidding)
 
+  const [rate, setRate] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
 
   useEffect(()=>{
     dispatch(getProduct(id))
   },[dispatch,id])
 
+  useEffect(()=>{
+    if(product && !product.isSoldout){
+
+      dispatch(fetchBiddingHistory(id))
+    }
+  },[dispatch,id,product])
+
+  // useEffect(()=>{
+  //     dispatch(fetchBiddingHistory(id))
+  // },[dispatch,id,product])
+  // console.log(history)
+
+  useEffect(()=>{
+    if(history && history.length>0){
+
+      const highestBid=Math.max(...history.map((bid)=>bid.price))
+      setRate(highestBid)
+    }else if(product){
+      setRate(product.price)
+    }
+  },[history,product])
+
+
+
+  const incrementBid=()=>{
+
+    setRate((prevRate)=>prevRate+1)
+  }
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
+
+  const save = async(e) => {
+      
+    e.preventDefault()
+
+    if(product.price > rate){
+      return toast.error("Your bid must be equal to or higher than product price")
+    }
+
+    const formData={
+      price:rate,
+      productId:id
+    }
+
+    try {
+      await dispatch(placeBid(formData)).unwrap()
+      dispatch(fetchBiddingHistory(id))
+
+    } catch (error) {
+
+      return toast.error("An error occurred while placing the bid")
+      
+    }
+  };
+
+  if(isLoading) return <Loader/>
 
   // console.log(product)
 
@@ -55,7 +115,7 @@ export const ProductsDetailsPage = () => {
               <br />
               <Caption>Item condition: New</Caption>
               <br />
-              <Caption>Item Verifed:{product?.isVerified ? "Yes" :"No"}</Caption>
+              <Caption>Item Verifed:{product?.isVerify ? "Yes" :"No"}</Caption>
               <br />
               <Caption>Time left:</Caption>
               <br />
@@ -89,15 +149,17 @@ export const ProductsDetailsPage = () => {
                 Price:<Caption>${product?.price} </Caption>
               </Title>
               <Title className="flex items-center gap-2">
-                Current bid:<Caption className="text-3xl">${product?.price} </Caption>
+                Current bid:<Caption className="text-3xl">${rate} </Caption>
               </Title>
               <div className="p-5 px-10 shadow-s3 py-8">
-                <form className="flex gap-3 justify-between">
-                  <input className={commonClassNameOfInput} type="number" name="price" />
-                  <button type="button" className="bg-gray-100 rounded-md px-5 py-3">
+                <form onSubmit={save} className="flex gap-3 justify-between">
+                  <input className={commonClassNameOfInput} type="number" name="price" value={rate} onChange={e=>setRate(e.target.value)} min={product?.price}/>
+                  <button type="button" onClick={incrementBid} className="bg-gray-100 rounded-md px-5 py-3">
                     <AiOutlinePlus />
                   </button>
-                  <button type="submit" className={`py-3 px-8 rounded-lg ${"bg-gray-400 text-gray-700 cursor-not-allowed"}`}>
+                  <button type="submit" className={ `py-3 px-8 rounded-lg  ${ product?.isSoldout || !product?.isVerify ? "bg-gray-400 text-gray-700 cursor-not-allowed" : "bg-green text-white"}`}
+                     disabled={product?.isSoldout || !product?.isVerify}
+                  >
                     Submit
                   </button>
                 </form>
@@ -161,6 +223,8 @@ export const ProductsDetailsPage = () => {
                         <Title>Price</Title>
                         <Caption> ${product?.price} </Caption>
                       </div>
+
+
                       <div className="flex justify-between py-3 border-b">
                         <Title>Sold Out</Title>
                         {product?.isSoldout ? <caption>Sold out</caption>:
@@ -169,7 +233,7 @@ export const ProductsDetailsPage = () => {
                       </div>
                       <div className="flex justify-between py-3 border-b">
                         <Title>verify</Title>
-                        {product?.isVerified ? <caption>Yes</caption>:
+                        {product?.isVerify ? <caption>Yes</caption>:
                         <caption>No</caption>}
                         No
                       </div>
@@ -194,7 +258,7 @@ export const ProductsDetailsPage = () => {
                   </div>
                 </div>
               )}
-              {activeTab === "auctionHistory" && <AuctionHistory />}
+              {activeTab === "auctionHistory" && <AuctionHistory history={history} />}
               {activeTab === "reviews" && (
                 <div className="reviews-tab shadow-s3 p-8 rounded-md">
                   <Title level={5} className=" font-normal">
@@ -218,7 +282,7 @@ export const ProductsDetailsPage = () => {
     </>
   );
 };
-export const AuctionHistory = () => {
+export const AuctionHistory = ({history}) => {
   return (
     <>
       <div className="shadow-s1 p-8 rounded-lg">
@@ -226,6 +290,11 @@ export const AuctionHistory = () => {
           Auction History
         </Title>
         <hr className="my-5" />
+        {history?.length===0 ? (
+          <h2 className="m-2">No Bidding record found</h2>
+        ):(
+
+       
 
         <div className="relative overflow-x-auto rounded-lg">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -246,15 +315,22 @@ export const AuctionHistory = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white border-b hover:bg-gray-50">
-                <td className="px-6 py-4">December 31, 2024 12:00 am</td>
-                <td className="px-6 py-4">$200</td>
-                <td className="px-6 py-4">Akshat</td>
+              {Array.isArray(history) && history.map((item,index)=>(
+
+              
+              <tr className="bg-white border-b hover:bg-gray-50" key={index}>
+                <td className="px-6 py-4">
+                  <DateFormatter date={item?.createdAt}/>
+                  </td>
+                <td className="px-6 py-4">${item?.price}</td>
+                <td className="px-6 py-4">{item?.user?.name}</td>
                 <td className="px-6 py-4"> </td>
               </tr>
+              ))}
             </tbody>
           </table>
         </div>
+         )}
       </div>
     </>
   );

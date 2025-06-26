@@ -54,12 +54,13 @@ const biddingSlice=createSlice({
             state.isLoading=false
             state.isSuccess=true
             state.isError=false
+            state.message=action.payload
             toast.success("Bid placed successfully")
-            state.bidding=action.payload
+            
         })
         .addCase(placeBid.rejected,(state,action)=>{
             state.isLoading=false
-            state.isSuccess=false
+          
             state.isError=true
             state.message=action.payload
         })
@@ -77,9 +78,9 @@ const biddingSlice=createSlice({
         .addCase(fetchBiddingHistory.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
-            state.isSuccess=false
+           
             state.message=action.payload
-            toast.error(action.payload)
+            
         })
 
         .addCase(sellproductsbyuser.pending,(state)=>{
@@ -89,14 +90,15 @@ const biddingSlice=createSlice({
             state.isLoading=false
             state.isSuccess=true
             state.isError=false
-            state.bidding=action.payload
+            state.message=action.payload
+           
 
 
         })  
         .addCase(sellproductsbyuser.rejected,(state,action)=>{
             state.isLoading=false
             state.isError=true
-            state.isSuccess=false
+           
             state.message=action.payload
 
         })

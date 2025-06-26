@@ -59,7 +59,7 @@ export const placeBidController =async (req, res) => {
       await existingUserBid.save();
 
 
-      res.status(200).json({ 
+     return res.status(200).json({ 
         message: "Bid updated successfully",
         success: true,
         biddingProduct: existingUserBid 
