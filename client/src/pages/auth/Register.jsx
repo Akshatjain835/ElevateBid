@@ -23,7 +23,16 @@ export const Register = () => {
 
   const {name,email,password,confirmPassword}=formData
   const {user,isLoading,isError,isSuccess,message,isLoggedIn}=useSelector((state)=>state.auth)
-// console.log(user)
+
+// Console logs for debugging
+console.log("🔍 Register Component State:", {
+  isLoading,
+  isSuccess,
+  isError,
+  isLoggedIn,
+  justRegistered,
+  hasUser: !!user
+});
    
 const handleInputChange = (e) => {
   const {name,value}=e.target
@@ -36,15 +45,21 @@ const handleInputChange = (e) => {
 const handleRegister = async e => {
   e.preventDefault();
   
+  console.log("🚀 Signup process started");
+  console.log("📝 Form data:", { name, email });
+  
   if(!name || !email || !password || !confirmPassword){
+    console.log("❌ Validation failed: Missing fields");
     toast.error("Please fill all fields")
     return
   }
   if(password.length < 8){
+    console.log("❌ Validation failed: Password too short");
     toast.error("Password must be at least 8 characters long")
     return
   }
   if(password !== confirmPassword){
+    console.log("❌ Validation failed: Passwords don't match");
     toast.error("Passwords do not match")
     return
   }
@@ -54,20 +69,33 @@ const handleRegister = async e => {
     email,
     password
   }
+  
+  console.log("✅ Validation passed, dispatching register action");
+  console.log("👤 User data being sent:", { name: userData.name, email: userData.email });
+  
   dispatch(register(userData))
   setJustRegistered(true)
   
-  
+  console.log("📤 Register action dispatched successfully");
 };
 
 useEffect(()=>{
   if(isSuccess && justRegistered){
+    console.log("🎉 Registration successful!");
+    console.log("👤 User data:", user);
+    console.log("🔄 Redirecting to home page...");
+    
     dispatch(RESET())
-    navigate("/login")
-    toast.success("Registration successfull")
+    navigate("/") // Changed from "/login" to "/" (home page)
+    toast.success("Registration successful! Welcome to ElevateBid!")
     setJustRegistered(false)
+    
+    console.log("✅ Redirect completed");
   }
   if(isError && justRegistered){
+    console.log("❌ Registration failed");
+    console.log("💬 Error message:", message);
+    
     dispatch(RESET())
     toast.error(message || "Something went wrong")
     setJustRegistered(false)
