@@ -56,10 +56,16 @@ const handleLogin = async (e) => {
 };
 
 useEffect(()=>{
-  if(isSuccess && justLoggedIn){
+  if(isSuccess && justLoggedIn && user){
     dispatch(RESET())
-    navigate("/")
-    toast.success("Login successfull")
+    if(user.role === "admin"){
+      navigate("/admin/dashboard")
+    } else if(user.role === "seller"){
+      navigate("/seller/products")
+    } else {
+      navigate("/")
+    }
+    toast.success(`Login successful as ${user.role}`)
     setJustLoggedIn(false)
   }
   if(isError && justLoggedIn){
@@ -67,7 +73,7 @@ useEffect(()=>{
     toast.error(message || "Something went wrong")
     setJustLoggedIn(false)
   }
-},[navigate,isError,isSuccess,justLoggedIn])
+},[navigate,isError,isSuccess,justLoggedIn,user])
 
   return (
     <>

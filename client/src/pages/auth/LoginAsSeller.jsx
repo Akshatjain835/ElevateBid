@@ -2,10 +2,11 @@ import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { Caption, Container, CustomNavLink, PrimaryButton, Title } from "../../routes/common/AllRoutes";
 import { commonClassNameOfInput } from "../../components/common/Design";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { loginUserAsSeller } from "../../redux/features/authSlice";
 import { toast } from "react-toastify";
 import { Loader } from "../../components/common/Loader";
+import { useNavigate } from "react-router-dom";
 
 const initialState={
   email:"",
@@ -16,11 +17,12 @@ const initialState={
 export const LoginAsSeller = () => {
 
   const dispatch = useDispatch();
- 
+  const navigate = useNavigate();
   const [formData, setFormData] = useState(initialState);
   const [justLoggedIn, setJustLoggedIn] = useState(false);
 
   const {email,password}=formData
+  const {user, isSuccess, isError, message} = useSelector((state)=>state.auth);
   const {isLoading}=useSelector((state)=>state.auth)
 // console.log(user)
    
@@ -54,6 +56,24 @@ const handleLogin = async e => {
   
   
 };
+
+useEffect(()=>{
+  if(isSuccess && justLoggedIn && user){
+    if(user.role === "seller"){
+      navigate("/seller/products");
+    } else if(user.role === "admin"){
+      navigate("/admin/dashboard");
+    } else {
+      navigate("/");
+    }
+    toast.success(`Login successful as ${user.role}`);
+    setJustLoggedIn(false);
+  }
+  if(isError && justLoggedIn){
+    toast.error(message || "Something went wrong");
+    setJustLoggedIn(false);
+  }
+}, [isSuccess, isError, justLoggedIn, user, message, navigate])
 
 
   return (

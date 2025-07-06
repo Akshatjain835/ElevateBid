@@ -3,6 +3,18 @@ import { generateToken } from "../../utils/generateToken.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+// Helper to get cookie options based on environment
+const getCookieOptions = () => {
+  const isProduction = process.env.NODE_ENV === "production";
+  return {
+    path: "/",
+    httpOnly: true,
+    expires: new Date(Date.now() + 1000 * 86400),
+    sameSite: isProduction ? "none" : "lax",
+    secure: isProduction,
+  };
+};
+
 export const registerUserController = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -25,13 +37,7 @@ export const registerUserController = async (req, res) => {
   });
 
   const token = generateToken(user._id);
-  res.cookie("token", token, {
-    path: "/",
-    httpOnly: true,
-    expires: new Date(Date.now() + 1000 * 86400), // 1 day
-    sameSite: "none",
-    secure: true,
-  });
+  res.cookie("token", token, getCookieOptions());
 
   if (user) {
     const { _id, name, email, photo, role } = user;
@@ -67,17 +73,11 @@ export const loginUserController = async (req, res) => {
   if (user && passwordIsCorrrect) {
     const token = generateToken(user._id);
 
-    res.cookie("token", token, {
-      path: "/",
-      httpOnly: true,
-      expires: new Date(Date.now() + 1000 * 86400),
-      sameSite: "none",
-      secure: true,
-    });
+    res.cookie("token", token, getCookieOptions());
 
     const { _id, name, email, photo, role } = user;
 
-    res.status(201).json({
+    return res.status(200).json({
       message: "User logged in successfully",
       _id,
       name,
@@ -87,8 +87,7 @@ export const loginUserController = async (req, res) => {
       token,
     });
   } else {
-    res.status(400);
-    throw new Error("Invalid email or password");
+    return res.status(400).json({ message: "Invalid email or password" });
   }
 };
 
@@ -115,8 +114,8 @@ export const logoutUserController = async (req, res) => {
     path: "/",
     httpOnly: true,
     expires: new Date(0),
-    sameSite: "none",
-    secure: true,
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: process.env.NODE_ENV === "production",
   });
 
   return res.status(200).json({
@@ -129,29 +128,21 @@ export const loginAsSellerController = async (req, res) => {
 
   // Check if email and password are provided
   if (!email || !password) {
-    res.status(400).json({ 
-      message: "Please provide email and password" 
-    });
+    return res.status(400).json({ message: "Please provide email and password" });
   }
 
   // Find the user by email
   const user = await User.findOne({ email });
 
   if (!user) {
-    
-   res.status(400).json({
-      message: "User not found" 
-    });
+    return res.status(400).json({ message: "User not found" });
   }
 
   // Verify the password
   const passwordIsCorrect = await bcrypt.compare(password, user.password);
 
   if (!passwordIsCorrect) {
-   
-    res.status(400).json({
-      message: "Incorrect password" 
-    });
+    return res.status(400).json({ message: "Incorrect password" });
   }
 
   // If password is correct, update the role to 'seller'
@@ -162,18 +153,12 @@ export const loginAsSellerController = async (req, res) => {
   // Generate a token and set cookie
   const token = generateToken(user._id);
 
-  res.cookie("token", token, {
-    path: "/",
-    httpOnly: true,
-    expires: new Date(Date.now() + 1000 * 86400),
-    sameSite: "none",
-    secure: true,
-  });
+  res.cookie("token", token, getCookieOptions());
 
   // Send the response with updated user info
   const { _id, name, email: userEmail, photo, role } = user;
 
-  res.status(200).json({
+  return res.status(200).json({
     message: "User logged in as seller successfully",
     _id,
     name,
@@ -185,27 +170,22 @@ export const loginAsSellerController = async (req, res) => {
 };
 
 export const getUserController = async (req, res) => {
-  
   const user = await User.findById(req.user._id).select("-password");
 
-  res.status(200).json({
+  return res.status(200).json({
     message: "User retrieved successfully",
     user,
   });
-
 };
 
-export const  getUserBalanceController =async (req, res) => {
-
+export const getUserBalanceController = async (req, res) => {
   const user = await User.findById(req.user.id);
 
   if (!user) {
-    res.status(404).json({
-      message: "User not found",
-    });
+    return res.status(404).json({ message: "User not found" });
   }
 
-  res.status(200).json({
+  return res.status(200).json({
     message: "User balance retrieved successfully",
     balance: user.balance,
   });

@@ -3,6 +3,7 @@ import { CategoryDropDown, Caption, PrimaryButton, Title } from "../../routes/co
 import { commonClassNameOfInput } from "../../components/common/Design";
 import { useRedirectLoggedOutUser } from "../../hooks/useRedirectLoggedOutUser";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { createProduct } from "../../redux/features/productSlice";
@@ -24,6 +25,13 @@ export const AddProduct = () => {
 
   const dispatch=useDispatch()
   const navigate=useNavigate()
+  const { user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (!user || user.role !== "seller") {
+      navigate("/login");
+    }
+  }, [user, navigate])
   
 
   const [product,setProduct]=useState(initialState)
